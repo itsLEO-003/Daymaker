@@ -11,8 +11,6 @@ const supabase = createClient(
     process.env.SUPABASE_SECRET_KEY
 );
 
-const PORT = 3000;
-
 app.use(cors());
 app.use(express.json());
 
@@ -74,7 +72,7 @@ app.post("/api/messages", async (req, res) => {
 
 // Get messages
 app.get("/api/messages", async (req, res) => {
-    const { counsellorId } = req.query;
+    const { counsellorId, studentEmail } = req.query;
 
     let query = supabase
         .from("messages")
@@ -82,14 +80,13 @@ app.get("/api/messages", async (req, res) => {
         .order("timestamp", { ascending: true });
 
     if (counsellorId) {
-    query = query.eq("counsellor_id", counsellorId);
+        query = query.eq("counsellor_id", counsellorId);
     }
-
-    const { studentEmail } = req.query;
 
     if (studentEmail) {
-    query = query.eq("student_email", studentEmail);
+        query = query.eq("student_email", studentEmail);
     }
+
     const { data, error } = await query;
 
     if (error) {
@@ -104,6 +101,13 @@ app.get("/api/messages", async (req, res) => {
     res.json(data);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+    const PORT = 3000;
+
+    app.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
+}
+
+// Export app for Vercel
+module.exports = app;
