@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DayMaker — Your Safe Space</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FFFDF7',
+                        orange: '#EA580C',      // Bolder Orange
+                        yellow: '#F59E0B',      // Bolder Amber/Yellow
+                        lavender: '#7C3AED',    // Bolder Violet/Lavender
+                        'text-main': '#1E293B', // Bolder Slate
+                        'text-sub': '#475569',  // Bolder Sub Slate
+                    },
+                    fontFamily: {
+                        heading: ['Poppins', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '16px',
+                        'btn': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+    </head>
+<body class="bg-cream text-text-main antialiased">
+
+    <!-- ================= LOGIN OVERLAY ================= -->
+    <div id="login-page" class="hidden fixed inset-0 z-[100] min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-cream/95 backdrop-blur-md overflow-y-auto">
+        <div class="absolute top-20 left-10 w-64 h-64 bg-orange/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-10 w-80 h-80 bg-lavender/10 rounded-full blur-3xl"></div>
+        
+        <div class="w-full max-w-md relative z-10 my-12">
+            <div class="text-center mb-10 fade-in">
+                <div class="inline-flex items-center gap-2.5 mb-4">
+                    <div class="w-12 h-12 bg-orange rounded-full flex items-center justify-center soft-shadow"><i data-lucide="sun" class="w-6 h-6 text-white"></i></div>
+                    <span class="text-3xl font-heading font-semibold tracking-tight text-text-main">DayMaker</span>
+                </div>
+                <p class="text-text-sub text-sm font-medium">Your safe, anonymous space for mental health support.</p>
+            </div>
+
+            <!-- Student View -->
+            <div id="student-view" class="hidden bg-white rounded-card p-8 md:p-10 border border-orange/20 soft-shadow fade-in">
+                <button onclick="backToWebsite()" class="flex items-center gap-2 text-sm font-medium text-text-sub hover:text-orange mb-6 transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Website</button>
+                <h2 class="text-2xl font-heading font-semibold mb-2">Student Login</h2>
+                <p class="text-sm text-text-sub mb-8">Fill in your details to start chatting. Your name is kept private from peers. Your details will only be checked in case of emergency</p>
+                <form id="student-form" onsubmit="loginStudent(event)" class="space-y-4">
+
+    <div>
+        <label
+            for="stu-email"
+            class="block text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-2">
+            College Email ID
+        </label>
+
+        <input
+            type="email"
+            id="stu-email"
+            required
+            placeholder="xyz@gkciet.ac.in"
+            class="w-full bg-cream rounded-btn px-5 py-3.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-orange/50 transition-all placeholder:text-text-sub/50">
+    </div>
+
+    <div id="student-error"
+         class="hidden text-red-500 text-xs font-medium">
+    </div>
+
+    <button
+        type="submit"
+        class="w-full bg-orange text-white text-xs font-heading font-bold uppercase tracking-wide px-8 py-4 rounded-btn hover:bg-orange/90 transition-all duration-300 soft-shadow mt-4">
+
+        Enter DayMaker
+
+    </button>
+
+</form>
+            </div>
+
+            <!-- Admin View -->
+             <!-- ADMIN COUNSELLOR SELECTION -->
+            <div id="admin-counsellor-selection"
+                class="hidden bg-white rounded-3xl p-8 md:p-10 border border-neutral-200/60 shadow-xl">
+
+                <button
+                    onclick="backToWebsite()"
+                    class="flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 mb-6 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Back to Website
+                </button>
+
+                <div class="text-center mb-8">
+                    <div class="w-14 h-14 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="shield-check" class="w-7 h-7 text-neutral-700"></i>
+                    </div>
+
+                    <h2 class="text-2xl font-semibold tracking-tight mb-2">
+                        Select Counsellor
+                    </h2>
+
+                    <p class="text-sm text-neutral-500">
+                        Choose the counsellor account you want to access.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+
+                    <button
+                        onclick="selectAdminCounsellor('dr-abhishek')"
+                        class="w-full group bg-white text-neutral-900 rounded-2xl p-5 flex items-center gap-4 border-2 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50 transition-all">
+
+                        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 text-purple-600"></i>
+                        </div>
+
+                        <div class="text-left">
+                            <p class="font-semibold text-sm">
+                                Dr. Abhishek Hossain
+                            </p>
+                            <p class="text-xs text-neutral-400">
+                                College Counsellor
+                            </p>
+                        </div>
+
+                        <i data-lucide="arrow-right"
+                        class="w-5 h-5 ml-auto text-neutral-400 group-hover:translate-x-1 transition-transform">
+                        </i>
+                    </button>
+                        <button
+    onclick="selectAdminCounsellor('dr-sandip')"
+    class="w-full group bg-white text-neutral-900 rounded-2xl p-5 flex items-center gap-4 border-2 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50 transition-all">
+
+    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+        <i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i>
+    </div>
+
+    <div class="text-left">
+        <p class="font-semibold text-sm">
+            Dr. Sandip Chandra
+        </p>
+        <p class="text-xs text-neutral-400">
+            Academic Counsellor
+        </p>
+    </div>
+
+    <i data-lucide="arrow-right"
+       class="w-5 h-5 ml-auto text-neutral-400 group-hover:translate-x-1 transition-transform">
+    </i>
+</button>
+
+                    <button
+                        onclick="selectAdminCounsellor('sc1')"
+                        class="w-full group bg-white text-neutral-900 rounded-2xl p-5 flex items-center gap-4 border-2 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50 transition-all">
+
+                        <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 text-orange-600"></i>
+                        </div>
+
+                        <div class="text-left">
+                            <p class="font-semibold text-sm">
+                                Student Counsellor-1
+                            </p>
+                            <p class="text-xs text-neutral-400">
+                                Peer Counsellor
+                            </p>
+                        </div>
+
+                        <i data-lucide="arrow-right"
+                        class="w-5 h-5 ml-auto text-neutral-400 group-hover:translate-x-1 transition-transform">
+                        </i>
+                    </button>
+
+
+                    <button
+                        onclick="selectAdminCounsellor('sc2')"
+                        class="w-full group bg-white text-neutral-900 rounded-2xl p-5 flex items-center gap-4 border-2 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50 transition-all">
+
+                        <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+
+                        <div class="text-left">
+                            <p class="font-semibold text-sm">
+                                Student Counsellor-2
+                            </p>
+                            <p class="text-xs text-neutral-400">
+                                Peer Counsellor
+                            </p>
+                        </div>
+
+                        <i data-lucide="arrow-right"
+                        class="w-5 h-5 ml-auto text-neutral-400 group-hover:translate-x-1 transition-transform">
+                        </i>
+                    </button>
+
+                </div>
+            </div>
+            <div id="admin-view" class="hidden bg-white rounded-card p-8 md:p-10 border border-orange/20 soft-shadow fade-in">
+                <button onclick="backToWebsite()" class="flex items-center gap-2 text-sm font-medium text-text-sub hover:text-lavender mb-6 transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Website</button>
+                <h2 class="text-2xl font-heading font-semibold mb-2">Admin Login</h2>
+                <p class="text-sm text-text-sub mb-8">Access the counsellor dashboard.</p>
+                <form id="admin-form" onsubmit="loginAdmin(event)" class="space-y-4">
+                    <div><label class="block text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-2">Admin ID</label><input type="text" id="admin-id" required placeholder="Enter your admin ID" class="w-full bg-cream rounded-btn px-5 py-3.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-lavender/50 transition-all placeholder:text-text-sub/50"></div>
+                    <div><label class="block text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-2">Password</label><input type="password" id="admin-pass" required placeholder="Enter your password" class="w-full bg-cream rounded-btn px-5 py-3.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-lavender/50 transition-all placeholder:text-text-sub/50"></div>
+                    <div id="admin-error" class="hidden text-red-500 text-xs font-medium"></div>
+                    <button type="submit" class="w-full bg-lavender text-white text-xs font-heading font-bold uppercase tracking-wide px-8 py-4 rounded-btn hover:bg-lavender/90 transition-all duration-300 soft-shadow mt-4">Access Dashboard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= STUDENT APP ================= -->
+    <div id="student-app">
+        <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-cream/80 backdrop-blur-md">
+            <div class="max-w-[1800px] mx-auto px-6 md:px-12 py-4 md:py-6 flex items-center justify-between">
+                <a href="#" class="flex items-center gap-2.5 group"><div class="w-9 h-9 bg-orange rounded-full flex items-center justify-center group-hover:scale-105 transition-transform duration-300"><i data-lucide="sun" class="w-4 h-4 text-white"></i></div><span class="text-lg font-heading font-semibold tracking-tight">DayMaker</span></a>
+                <div class="hidden md:flex items-center gap-10">
+                    <a href="#chat" class="text-sm font-medium nav-link-underline active-link transition-colors duration-300 hover:text-orange">Chat</a>
+                    <a href="#tips" class="text-sm font-medium nav-link-underline transition-colors duration-300 hover:text-orange">Crisis Tips</a>
+                    <a href="#articles" class="text-sm font-medium nav-link-underline transition-colors duration-300 hover:text-orange">Articles</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="promptAdminLogin()" class="hidden md:inline-flex items-center gap-2 border border-lavender/30 text-lavender text-xs font-heading font-bold uppercase tracking-wide px-5 py-3 rounded-btn hover:bg-lavender/5 transition-all duration-300">
+                        <i data-lucide="user-cog" class="w-3.5 h-3.5"></i> Admin
+                    </button>
+                    <button id="mobile-menu-btn-stu" class="md:hidden p-2 hover:bg-orange/5 rounded-lg transition-colors"><i data-lucide="menu" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+            <div id="mobile-menu-stu" class="md:hidden hidden border-t border-orange/10 bg-cream/95 backdrop-blur-sm"><div class="px-6 py-4 flex flex-col gap-3">
+                <a href="#chat" class="text-sm font-medium py-2 hover:text-orange transition-colors mobile-nav-link">Chat</a>
+                <a href="#tips" class="text-sm font-medium py-2 hover:text-orange transition-colors mobile-nav-link">Crisis Tips</a>
+                <a href="#articles" class="text-sm font-medium py-2 hover:text-orange transition-colors mobile-nav-link">Articles</a>
+                <button onclick="promptAdminLogin()" class="text-sm font-medium py-2 hover:text-lavender transition-colors text-left">Admin Login</button>
+            </div></div>
+        </nav>
+
+        <main class="mt-24 px-4 md:px-8 pb-20 max-w-[1800px] mx-auto">
+            <section class="bg-gradient-to-br from-cream via-yellow/10 to-lavender/10 rounded-card p-8 md:p-16 lg:p-24 relative overflow-hidden soft-shadow mb-8 reveal">
+                <div class="relative z-10 grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7">
+                        <div class="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 mb-8 soft-shadow"><span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span><span class="text-xs font-heading font-semibold uppercase tracking-wider text-text-sub">Counsellors Online Now</span></div>
+                        <h1 class="text-5xl md:text-7xl font-heading font-semibold leading-[1.05] tracking-tight mb-8">It's okay to<br> seek <span class="text-orange">help</span></h1>
+                        <p class="text-lg md:text-xl font-medium text-text-sub leading-relaxed max-w-xl mb-10">A safe, anonymous space to talk to counsellors and peer supporters, find crisis tips, and read articles.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="handleStartChat()" class="inline-flex items-center gap-2 bg-orange text-white text-xs font-heading font-bold uppercase tracking-wide px-8 py-4 rounded-btn hover:bg-orange/90 hover:scale-105 hover:-translate-y-1 transition-all duration-300 soft-shadow"><i data-lucide="message-circle" class="w-4 h-4"></i> Start Anonymous Chat</button>
+                            <a href="#tips" class="inline-flex items-center gap-2 bg-lavender text-white text-xs font-heading font-bold uppercase tracking-wide px-8 py-4 rounded-btn hover:bg-lavender/90 hover:scale-105 hover:-translate-y-1 transition-all duration-300 soft-shadow"><i data-lucide="zap" class="w-4 h-4"></i> Quick Tips</a>
+                        </div>
+                        <div class="flex flex-wrap gap-4 mt-12">
+                            <div class="flex items-center gap-2 bg-white/80 rounded-full px-4 py-2 soft-shadow text-sm font-heading font-medium"><i data-lucide="brain" class="w-4 h-4 text-orange"></i> Safe Space</div>
+                            <div class="flex items-center gap-2 bg-white/80 rounded-full px-4 py-2 soft-shadow text-sm font-heading font-medium"><i data-lucide="lock" class="w-4 h-4 text-orange"></i> Anonymous</div>
+                            <div class="flex items-center gap-2 bg-white/80 rounded-full px-4 py-2 soft-shadow text-sm font-heading font-medium"><i data-lucide="heart" class="w-4 h-4 text-orange"></i> No Judgment</div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5">
+                        <div class="relative">
+                            <div class="absolute -top-6 -left-6 w-full h-full bg-lavender/20 rounded-card z-0"></div>
+                            <div class="rounded-card overflow-hidden soft-shadow relative z-10 border-4 border-white">
+                                <img src="https://picsum.photos/seed/warm-student-smile/600/750.jpg" alt="Student in calm environment" class="w-full h-[400px] lg:h-[500px] object-cover">
+                            </div>
+                            <div class="absolute -bottom-6 -right-4 bg-white rounded-card p-4 soft-shadow flex items-center gap-3 z-20 border border-orange/10">
+                                <div class="w-10 h-10 bg-orange/10 rounded-full flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5 text-orange"></i></div>
+                                <div><p class="text-sm font-heading font-semibold">100% Anonymous</p><p class="text-xs text-text-sub">No names, no records</p></div>
+                            </div>
+                            <div class="absolute -top-4 -left-4 bg-white rounded-card p-4 soft-shadow z-20 border border-lavender/10">
+                                <p class="text-2xl font-heading font-light tracking-widest">24/7</p>
+                                <p class="text-xs text-text-sub font-medium">Support Available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="reveal"><div class="bg-orange/5 border border-orange/20 rounded-card p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4">
+                <div class="w-12 h-12 bg-orange/10 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="phone" class="w-5 h-5 text-orange"></i></div>
+                <div class="flex-1"><p class="font-heading font-semibold text-text-main">In a crisis? Reach out for immediate support:</p><p class="text-sm text-text-sub mt-1">Tele-Manas: <span class="font-heading font-semibold text-text-main">14416</span> • NIMHANS Helpline: <span class="font-heading font-semibold text-text-main">080-46110007</span></p></div>
+                <a href="tel:14416" class="inline-flex items-center gap-2 bg-orange text-white text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn hover:bg-orange/90 transition-colors flex-shrink-0"><i data-lucide="phone" class="w-3.5 h-3.5"></i> Call Now</a>
+            </div></section>
+
+            <section id="chat" class="mt-24 reveal">
+                <div class="mb-12"><span class="text-[11px] font-heading font-semibold uppercase tracking-wider text-text-sub">Anonymous Chat</span><h2 class="text-5xl md:text-6xl font-heading font-semibold tracking-tighter leading-tight mt-3">Talk freely.<br><span class="text-lavender">No judgment.</span></h2><p class="text-lg text-text-sub font-medium leading-relaxed mt-4 max-w-2xl">Choose who you'd like to speak with. Your identity stays completely anonymous.</p></div>
+                
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <!-- Prompt to Login -->
+                    <div id="chat-prompt" class="lg:col-span-12 bg-white rounded-card border border-orange/5 p-12 text-center soft-shadow flex flex-col items-center justify-center min-h-[400px]">
+                        <div class="w-20 h-20 bg-lavender/10 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="lock" class="w-10 h-10 text-lavender"></i>
+                        </div>
+                        <h3 class="text-2xl font-heading font-semibold mb-2">Login to Start Chatting</h3>
+                        <p class="text-text-sub mb-8 max-w-md">To maintain your privacy and save your conversations securely, please log in with your student details.</p>
+                        <button onclick="promptStudentLogin()" class="inline-flex items-center gap-2 bg-orange text-white text-xs font-heading font-bold uppercase tracking-wide px-8 py-4 rounded-btn hover:bg-orange/90 transition-all duration-300 soft-shadow">
+                            <i data-lucide="log-in" class="w-4 h-4"></i> Login as Student
+                        </button>
+                    </div>
+
+                    <!-- Chat Interface (Hidden until login) -->
+                    <div id="chat-interface-left"
+     class="hidden lg:col-span-4 space-y-4">
+
+    <!-- CATEGORY SELECTION -->
+    <div>
+
+        <p class="text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-3">
+            What would you like help with?
+        </p>
+
+        <div class="space-y-3">
+
+            <button
+                onclick="selectSupportCategory('mental-health')"
+                id="category-mental-health"
+                class="support-category w-full bg-white rounded-card p-5 border-2 border-transparent flex items-center gap-4 hover:border-lavender transition-all duration-300 text-left soft-shadow">
+
+                <div class="w-12 h-12 bg-lavender/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="heart-handshake"
+                       class="w-6 h-6 text-lavender">
+                    </i>
+                </div>
+
+                <div class="flex-1">
+                    <p class="font-heading font-semibold text-sm">
+                        Mental Health Issues
+                    </p>
+
+                    <p class="text-xs text-text-sub mt-1">
+                        Anxiety, low mood, emotional wellbeing
+                    </p>
+                </div>
+
+            </button>
+
+
+            <button
+                onclick="selectSupportCategory('academic-stress')"
+                id="category-academic-stress"
+                class="support-category w-full bg-white rounded-card p-5 border-2 border-transparent flex items-center gap-4 hover:border-orange transition-all duration-300 text-left soft-shadow">
+
+                <div class="w-12 h-12 bg-orange/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="book-open"
+                       class="w-6 h-6 text-orange">
+                    </i>
+                </div>
+
+                <div class="flex-1">
+                    <p class="font-heading font-semibold text-sm">
+                        Academic Stress
+                    </p>
+
+                    <p class="text-xs text-text-sub mt-1">
+                        Studies, exams, workload and academic pressure
+                    </p>
+                </div>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- COUNSELLOR LIST -->
+    <div id="available-counsellors"
+         class="hidden">
+
+        <p class="text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-3">
+            Available Counsellors
+        </p>
+
+
+        <!-- DR. ABHISHEK -->
+        <button
+            onclick="selectCounsellor('dr-abhishek')"
+            id="card-dr-abhishek"
+            data-categories="mental-health"
+            class="counsellor-card w-full bg-white rounded-card p-5 border-2 border-transparent flex items-center gap-4 hover:border-lavender transition-all duration-300 text-left soft-shadow mb-3">
+
+            <div class="w-14 h-14 bg-lavender/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="user"
+                   class="w-6 h-6 text-lavender">
+                </i>
+            </div>
+
+            <div class="flex-1 min-w-0">
+
+                <div class="flex items-center gap-2">
+
+                    <p class="font-heading font-semibold text-sm">
+                        Dr. Abhishek Hossain
+                    </p>
+
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span>
+
+                </div>
+
+                <p class="text-xs text-text-sub">
+                    College Counsellor • Online
+                </p>
+
+            </div>
+
+        </button>
+
+        
+        <!-- DR. SANDIP CHANDRA -->
+        <button
+            onclick="selectCounsellor('dr-sandip chandra')"
+            id="card-dr-sandip"
+            data-categories="academic-stress"
+            class="counsellor-card w-full bg-white rounded-card p-5 border-2 border-transparent flex items-center gap-4 hover:border-lavender transition-all duration-300 text-left soft-shadow mb-3">
+
+            <div class="w-14 h-14 bg-lavender/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="user"
+                   class="w-6 h-6 text-lavender">
+                </i>
+            </div>
+
+            <div class="flex-1 min-w-0">
+
+                <div class="flex items-center gap-2">
+
+                    <p class="font-heading font-semibold text-sm">
+                        Dr. Sandip Chandra
+                    </p>
+
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span>
+
+                </div>
+
+                <p class="text-xs text-text-sub">
+                    College Counsellor • Online
+                </p>
+
+            </div>
+
+        </button>
+
+
+        <!-- STUDENT COUNSELLOR 1 -->
+        <button
+            onclick="selectCounsellor('sc1')"
+            id="card-sc1"
+            data-categories="mental-health,academic-stress"
+            class="counsellor-card w-full bg-white rounded-card p-5 border-2 border-transparent flex items-center gap-4 hover:border-orange transition-all duration-300 text-left soft-shadow mb-3">
+
+            <div class="w-14 h-14 bg-orange/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="smile"
+                   class="w-6 h-6 text-orange">
+                </i>
+            </div>
+
+            <div class="flex-1 min-w-0">
+
+                <div class="flex items-center gap-2">
+
+                    <p class="font-heading font-semibold text-sm">
+                        Student Counsellor-1
+                    </p>
+
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></span>
+
+                </div>
+
+                <p class="text-xs text-text-sub">
+                    Peer Counsellor • Online
+                </p>
+
+            </div>
+
+        </button>
+
+
+        <!-- STUDENT COUNSELLOR 2 -->
+        <button
+            onclick="selectCounsellor('sc2')"
+            id="card-sc2"
+            data-categories="mental-health,academic-stress"
+            class="counsellor-card w-full bg-white rounded-card p-5 border-2 border-transparent flex items-center gap-4 hover:border-yellow transition-all duration-300 text-left soft-shadow mb-3">
+
+            <div class="w-14 h-14 bg-yellow/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="smile"
+                   class="w-6 h-6 text-yellow">
+                </i>
+            </div>
+
+            <div class="flex-1 min-w-0">
+
+                <div class="flex items-center gap-2">
+
+                    <p class="font-heading font-semibold text-sm">
+                        Student Counsellor-2
+                    </p>
+
+                    <span class="w-2 h-2 bg-yellow rounded-full pulse-dot"></span>
+
+                </div>
+
+                <p class="text-xs text-text-sub">
+                    Peer Counsellor • Busy
+                </p>
+
+            </div>
+
+        </button>
+
+    </div>
+
+
+    <!-- PRIVACY NOTICE -->
+    <div class="bg-white rounded-card p-5 mt-4 soft-shadow">
+
+        <div class="flex items-start gap-3">
+
+            <i data-lucide="lock"
+               class="w-4 h-4 text-lavender mt-0.5 flex-shrink-0">
+            </i>
+
+            <div>
+
+                <p class="text-xs font-heading font-semibold text-text-main">
+                    Your Privacy
+                </p>
+
+                <p class="text-xs text-text-sub mt-1 leading-relaxed">
+                    You appear as "Anonymous Student."
+                    Your email is kept private.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div><div id="chat-interface-right" class="hidden lg:col-span-8">
+                        <div class="bg-white rounded-card border border-orange/5 overflow-hidden soft-shadow flex flex-col chat-container">
+                            <div class="px-6 py-4 border-b border-orange/5 flex items-center justify-between bg-cream/50">
+                                <div class="flex items-center gap-3"><div id="stu-chat-avatar" class="w-10 h-10 bg-orange/10 rounded-full flex items-center justify-center"><i data-lucide="message-circle" class="w-5 h-5 text-orange"></i></div><div><p id="stu-chat-name" class="text-sm font-heading font-semibold">Select a supporter</p><p id="stu-chat-status" class="text-xs text-text-sub">Choose from the list →</p></div></div>
+                                <button onclick="clearStudentChat()" class="text-xs text-text-sub hover:text-orange transition-colors flex items-center gap-1.5"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear</button>
+                            </div>
+                            <div id="stu-chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4 bg-cream/30">
+                                <div class="flex flex-col items-center justify-center h-full text-text-sub text-center">
+                                    <svg class="w-32 h-32 text-lavender/20 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                    <p class="font-heading font-semibold text-text-main">Select a counsellor to start chatting.</p>
+                                    <p class="text-sm mt-1">Your messages are 100% anonymous.</p>
+                                </div>
+                            </div>
+                            <div class="px-6 py-4 border-t border-orange/5 bg-white">
+                                <form id="stu-chat-form" onsubmit="sendStudentMessage(event)" class="flex items-center gap-3">
+                                    <div class="flex-1 relative"><input type="text" id="stu-chat-input" placeholder="Type your message..." disabled class="w-full bg-cream rounded-btn px-5 py-3.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-orange/30 transition-all placeholder:text-text-sub/50 disabled:opacity-50 disabled:cursor-not-allowed"></div>
+                                    <button type="submit" id="stu-chat-send" disabled class="w-12 h-12 bg-orange text-white rounded-btn flex items-center justify-center hover:bg-orange/90 transition-all duration-300 hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed"><i data-lucide="send" class="w-4 h-4"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tips" class="mt-24 reveal"><div class="mb-12"><span class="text-[11px] font-heading font-semibold uppercase tracking-wider text-text-sub">Immediate Relief</span><h2 class="text-5xl md:text-6xl font-heading font-semibold tracking-tighter leading-tight mt-3">Crisis tips that<br><span class="text-orange">work in minutes.</span></h2></div><div class="flex flex-wrap gap-3 mb-8"><button onclick="filterTips('all')" class="tip-filter active-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-orange text-white transition-all duration-300">All Tips</button><button onclick="filterTips('2min')" class="tip-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-orange/10 hover:border-orange transition-all duration-300">2 Min</button><button onclick="filterTips('5min')" class="tip-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-orange/10 hover:border-orange transition-all duration-300">5 Min</button><button onclick="filterTips('10min')" class="tip-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-orange/10 hover:border-orange transition-all duration-300">10 Min</button></div><div id="tips-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div></section>
+
+            <section id="articles" class="mt-24 reveal"><div class="mb-12"><span class="text-[11px] font-heading font-semibold uppercase tracking-wider text-text-sub">Learn & Grow</span><h2 class="text-5xl md:text-6xl font-heading font-semibold tracking-tighter leading-tight mt-3">Stories & insights<br><span class="text-lavender">for your mind.</span></h2></div><div class="flex flex-wrap gap-3 mb-8"><button onclick="filterArticles('all')" class="article-filter active-article-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-lavender text-white transition-all duration-300">All</button><button onclick="filterArticles('anxiety')" class="article-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-lavender/20 hover:border-lavender transition-all duration-300">Anxiety</button><button onclick="filterArticles('depression')" class="article-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-lavender/20 hover:border-lavender transition-all duration-300">Depression</button><button onclick="filterArticles('wellness')" class="article-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-lavender/20 hover:border-lavender transition-all duration-300">Wellness</button><button onclick="filterArticles('social')" class="article-filter text-xs font-heading font-bold uppercase tracking-wide px-5 py-2.5 rounded-btn bg-white text-text-sub border border-lavender/20 hover:border-lavender transition-all duration-300">Social</button></div><div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div></section>
+        </main>
+
+       
+        <footer class="bg-lavender/10 mt-24">
+    <div class="max-w-[1800px] mx-auto px-6 md:px-12 py-16 md:py-24">
+
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+
+        <!-- DayMaker -->
+        <div>
+            <div class="flex items-center gap-2.5 mb-6">
+                <div class="w-9 h-9 bg-orange rounded-full flex items-center justify-center">
+                    <i data-lucide="sun" class="w-4 h-4 text-white"></i>
+                </div>
+
+                <span class="text-lg font-heading font-semibold tracking-tight">
+                    DayMaker
+                </span>
+            </div>
+
+            <p class="text-sm text-text-sub leading-relaxed">
+                A safe, anonymous mental health platform built for our college community.
+            </p>
+        </div>
+
+        <!-- Emergency -->
+        <div>
+            <p class="text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-4">
+                Emergency
+            </p>
+
+            <ul class="space-y-3">
+                <li>
+                    <span class="text-sm text-text-main font-medium">
+                        Tele-Manas: 14416
+                    </span>
+                </li>
+
+                <li>
+                    <span class="text-sm text-text-main font-medium">
+                        NIMHANS: 080-46110007
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- UGC Anti-Ragging -->
+        <div>
+            <p class="text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-4">
+                UGC Anti-Ragging
+            </p>
+
+            <ul class="space-y-3">
+                <li>
+                    <span class="text-sm text-text-main font-medium">
+                        National Helpline: 1800-180-5522
+                    </span>
+                </li>
+
+                <li>
+                    <span class="text-sm text-text-sub">
+                        24×7 Toll-Free
+                    </span>
+                </li>
+
+                <li>
+                    <a href="mailto:helpline@antiragging.in"
+                       class="text-sm text-text-main hover:underline">
+                        helpline@antiragging.in
+                    </a>
+                </li>
+
+                <li>
+    <a href="https://www.antiragging.in/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="text-lg text-red-600 font-bold hover:text-red-700 hover:underline">
+        National Anti-Ragging Portal →
+    </a>
+</li>
+            </ul>
+        </div>
+
+        <!-- Disclaimer -->
+        <div>
+            <p class="text-xs font-heading font-semibold uppercase tracking-wider text-text-sub mb-4">
+                Disclaimer
+            </p>
+
+            <p class="text-xs text-text-sub leading-relaxed">
+                This platform is not a substitute for professional medical advice.
+            </p>
+
+            <p class="text-xs text-text-sub leading-relaxed mt-3">
+                If you are experiencing or witnessing ragging, contact the
+                National Anti-Ragging Helpline immediately.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="border-t border-lavender/20 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+
+        <p class="text-xs text-text-sub">
+            © 2026 DayMaker. Made by U.SINGHA for our college community.
+        </p>
+
+        <p class="text-xs text-text-main font-heading font-medium">
+            You matter. Always.
+        </p>
+
+    </div>
+</div>
+
+
+</footer>
+
+        </div>
+
+    <!-- ================= ADMIN APP ================= -->
+    <div id="admin-app" class="hidden min-h-screen flex flex-col bg-cream">
+        <!-- ADMIN Navigation -->
+        <nav class="bg-white border-b border-orange/10 sticky top-0 z-50 soft-shadow">
+            <div class="max-w-[1800px] mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5"><div class="w-9 h-9 bg-lavender rounded-full flex items-center justify-center"><i data-lucide="sun" class="w-4 h-4 text-white"></i></div><span class="text-lg font-heading font-semibold tracking-tight">DayMaker Admin</span></div>
+                <div class="flex items-center gap-4">
+                    <button onclick="switchAdminTab('chat')" id="tab-btn-chat" class="text-xs font-heading font-bold uppercase tracking-wide px-4 py-2 rounded-btn border-2 border-transparent hover:bg-orange/5 transition-colors text-text-sub admin-tab-active">Chat</button>
+                    <button onclick="switchAdminTab('post')" id="tab-btn-post" class="text-xs font-heading font-bold uppercase tracking-wide px-4 py-2 rounded-btn border-2 border-transparent hover:bg-lavender/5 transition-colors text-text-sub">Post Article</button>
+                    <button onclick="logout()" class="text-xs font-heading font-bold uppercase tracking-wide px-4 py-2 rounded-btn border border-orange/20 hover:bg-orange/5 transition-colors flex items-center gap-2 text-text-sub"><i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-1 max-w-[1800px] mx-auto w-full px-4 md:px-8 py-8">
+            <div id="admin-chat-section" class="hidden fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- STUDENT LIST -->
+    <div class="bg-white rounded-3xl border border-neutral-200/60 soft-shadow overflow-hidden">
+
+        <div class="p-5 border-b border-neutral-100">
+            <h3 class="font-heading font-semibold text-lg">
+                Students
+            </h3>
+
+            <p class="text-xs text-text-sub mt-1">
+                Students who contacted you
+            </p>
+        </div>
+
+        <div id="admin-student-list" class="divide-y divide-neutral-100">
+
+            <div class="p-5 text-sm text-text-sub text-center">
+                No conversations yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CHAT -->
+    <div class="lg:col-span-2 bg-white rounded-3xl border border-neutral-200/60 soft-shadow overflow-hidden">
+
+        <!-- CHAT HEADER -->
+        <div class="p-5 border-b border-neutral-100">
+
+            <h3 id="admin-chat-name"
+                class="font-heading font-semibold text-lg">
+                Select a student
+            </h3>
+
+            <p id="admin-chat-status"
+               class="text-xs text-text-sub mt-1">
+                Choose a student to view their messages.
+            </p>
+
+        </div>
+
+
+        <!-- MESSAGES -->
+        <div id="admin-chat-messages"
+             class="h-[450px] overflow-y-auto p-6 space-y-4">
+
+            <div class="h-full flex flex-col items-center justify-center text-center text-text-sub">
+
+                <i data-lucide="message-circle"
+                   class="w-12 h-12 mb-4 text-lavender/20">
+                </i>
+
+                <p class="font-heading font-semibold text-text-main">
+                    No conversation selected
+                </p>
+
+                <p class="text-sm mt-1">
+                    Select a student from the list.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- REPLY BOX -->
+        <form onsubmit="sendAdminMessage(event)"
+              class="border-t border-neutral-100 p-4 flex gap-3">
+
+            <input
+                id="admin-chat-input"
+                type="text"
+                placeholder="Type your reply..."
+                disabled
+                class="flex-1 bg-cream rounded-2xl px-4 py-3 text-sm outline-none border border-transparent focus:border-orange">
+
+            <button
+                id="admin-chat-send"
+                type="submit"
+                disabled
+                class="px-5 py-3 bg-orange text-white rounded-2xl font-heading font-semibold text-sm">
+
+                Send
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div> 
+</div> <!-- admin-chat-section -->
+<!-- ================= POST ARTICLE SECTION ================= -->
+<div id="admin-post-section" class="hidden fade-in">
+
+    <div class="max-w-4xl mx-auto">
+
+        <div class="bg-white rounded-3xl border border-neutral-200/60 soft-shadow overflow-hidden">
+
+            <div class="p-6 border-b border-neutral-100">
+                <h2 class="font-heading font-semibold text-2xl text-text-main">
+                    Publish Article
+                </h2>
+
+                <p class="text-sm text-text-sub mt-1">
+                    Add an article or photo to the main website.
+                </p>
+            </div>
+
+            <form onsubmit="postNewArticle(event)" class="p-6 space-y-6">
+
+                <div>
+                    <label for="post-title"
+                           class="block text-sm font-heading font-semibold mb-2">
+                        Article Title
+                    </label>
+
+                    <input
+                        id="post-title"
+                        type="text"
+                        placeholder="Enter article title"
+                        required
+                        class="w-full bg-cream rounded-2xl px-4 py-3 text-sm outline-none border border-neutral-200 focus:border-orange">
+                </div>
+
+                <div>
+                    <label for="post-category"
+                           class="block text-sm font-heading font-semibold mb-2">
+                        Category
+                    </label>
+
+                    <input
+                        id="post-category"
+                        type="text"
+                        placeholder="e.g. Mental Health, Student Life"
+                        required
+                        class="w-full bg-cream rounded-2xl px-4 py-3 text-sm outline-none border border-neutral-200 focus:border-orange">
+                </div>
+
+                <div>
+                    <label for="post-content"
+                           class="block text-sm font-heading font-semibold mb-2">
+                        Article Content
+                    </label>
+
+                    <textarea
+                        id="post-content"
+                        rows="10"
+                        placeholder="Write your article here..."
+                        required
+                        class="w-full bg-cream rounded-2xl px-4 py-3 text-sm outline-none border border-neutral-200 focus:border-orange resize-y"></textarea>
+                </div>
+
+                <div>
+                    <label for="post-image"
+                           class="block text-sm font-heading font-semibold mb-2">
+                        Photo URL
+                    </label>
+
+                    <input
+                        id="post-image"
+                        type="url"
+                        placeholder="Paste image URL"
+                        class="w-full bg-cream rounded-2xl px-4 py-3 text-sm outline-none border border-neutral-200 focus:border-orange">
+
+                    <p class="text-xs text-text-sub mt-2">
+                        Leave this empty if the article has no photo.
+                    </p>
+                </div>
+
+                <div class="flex justify-end">
+                    <button
+                        type="submit"
+                        class="px-6 py-3 bg-orange text-white rounded-2xl font-heading font-semibold text-sm">
+                        Publish Article
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+</main>
+</div> <!-- admin-app -->
+
+    <!-- Modals & Toasts -->
+    <div id="tip-modal" class="fixed inset-0 z-[100] hidden"><div class="absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeTipModal()"></div><div class="absolute inset-4 md:inset-12 lg:inset-24 bg-white rounded-card overflow-hidden flex flex-col"><div class="px-6 md:px-10 py-6 border-b border-orange/5 flex items-center justify-between"><div><p id="modal-category" class="text-[10px] font-heading font-semibold uppercase tracking-wider text-text-sub"></p><h3 id="modal-title" class="text-2xl font-heading font-semibold tracking-tight mt-1"></h3></div><button onclick="closeTipModal()" class="w-10 h-10 rounded-btn bg-cream flex items-center justify-center hover:bg-orange/10 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="flex-1 overflow-y-auto px-6 md:px-10 py-8" id="modal-body"></div></div></div>
+    <div id="article-modal" class="fixed inset-0 z-[100] hidden"><div class="absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeArticleModal()"></div><div class="absolute inset-4 md:inset-12 lg:inset-20 bg-white rounded-card overflow-hidden flex flex-col"><div class="px-6 md:px-10 py-6 border-b border-orange/5 flex items-center justify-between"><p id="article-modal-cat" class="text-[10px] font-heading font-semibold uppercase tracking-wider text-text-sub"></p><button onclick="closeArticleModal()" class="w-10 h-10 rounded-btn bg-cream flex items-center justify-center hover:bg-lavender/10 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="flex-1 overflow-y-auto" id="article-modal-body"></div></div></div>
+    <div id="toast" class="fixed bottom-6 right-6 z-[200] hidden"><div class="bg-lavender text-white rounded-btn px-6 py-4 soft-shadow flex items-center gap-3 chat-bubble-in"><i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0"></i><span id="toast-message" class="text-sm font-medium"></span></div></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

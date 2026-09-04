@@ -1,0 +1,24 @@
+    body { font-family: 'Inter', sans-serif; background-color: #FFFDF7; color: #1E293B; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+        ::selection { background: #7C3AED; color: #FFFFFF; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FFFDF7; }
+        ::-webkit-scrollbar-thumb { background: #EA580C; border-radius: 20px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c2410c; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .chat-bubble-in { animation: bubbleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes bubbleIn { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .pulse-dot { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } }
+        .nav-link-underline { position: relative; }
+        .nav-link-underline::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #EA580C; transition: width 0.3s ease; }
+        .nav-link-underline:hover::after, .nav-link-underline.active-link::after { width: 100%; }
+        .soft-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        .chat-container { height: 550px; }
+        @media (max-width: 768px) { .chat-container { height: 450px; } }
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .admin-tab-active { border-color: #EA580C; color: #1E293B; background: #FFFDF7; }
