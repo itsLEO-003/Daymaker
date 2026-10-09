@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ikigai Atlas — Career Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:ital,wght@0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================
+     THEME — "Warm Supportive"
+     Cream canvas · white soft-shadow cards · orange primary ·
+     lavender secondary · amber tertiary · Poppins + Inter
+  ========================================================== */
+  :root{
+    --bg:#FFFDF7;
+    --card:#FFFFFF;
+    --shadow:0 4px 20px rgba(0,0,0,0.05);
+    --shadow-lg:0 16px 40px rgba(30,41,59,0.10);
+    --shadow-btn:0 6px 16px rgba(234,88,12,0.22);
+
+    --primary:#EA580C;        /* bold orange — CTAs & highlights */
+    --primary-deep:#C2410C;
+    --primary-soft:#FFEDD5;
+
+    --secondary:#7C3AED;      /* bold lavender — secondary actions */
+    --secondary-deep:#6D28D9;
+    --secondary-soft:#EDE9FE;
+
+    --tertiary:#F59E0B;       /* amber — tertiary accent */
+    --tertiary-deep:#B45309;
+    --tertiary-soft:#FEF3C7;
+
+    --rose:#E11D48;           /* 4th sector colour (warm rose) */
+    --rose-deep:#BE123C;
+    --rose-soft:#FFE4E6;
+
+    --text:#1E293B;
+    --text-2:#475569;
+    --text-3:#94A3B8;
+    --line:#F0EADD;           /* hairlines on cream */
+    --line-card:#E9EDF2;      /* borders inside white cards */
+    --input:#E2E8F0;
+
+    --radius:16px;            /* cards */
+    --radius-btn:12px;        /* buttons */
+
+    --font-h:'Poppins',sans-serif;
+    --font-b:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font:400 16px/1.65 var(--font-b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--tertiary-soft)}
+  button{font-family:var(--font-b)}
+  :focus-visible{outline:2px solid var(--secondary);outline-offset:3px;border-radius:6px}
+  h1,h2,h3{font-family:var(--font-h);font-weight:600}
+  .ic{width:18px;height:18px;flex:none}
+
+  /* ---------- scroll-reveal (fade-up only) ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0ms)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ==========================================================
+     BUTTONS — 12px radius · bold uppercase small · lift on hover
+  ========================================================== */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+    font:700 .78rem/1 var(--font-b);letter-spacing:.08em;text-transform:uppercase;
+    padding:.95rem 1.55rem;border-radius:var(--radius-btn);border:1.5px solid transparent;
+    cursor:pointer;user-select:none;white-space:nowrap;
+    transition:transform .22s ease,box-shadow .22s ease,background .22s,border-color .22s,color .22s}
+  .btn:hover{transform:translateY(-2px) scale(1.02)}
+  .btn:active{transform:translateY(0) scale(.99)}
+  .btn .ic{width:16px;height:16px}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow-btn)}
+  .btn-primary:hover{background:var(--primary-deep);box-shadow:0 10px 24px rgba(234,88,12,.28)}
+  .btn-secondary{background:var(--card);color:var(--secondary);border-color:var(--secondary)}
+  .btn-secondary:hover{background:var(--secondary-soft)}
+  .btn-ghost{background:var(--card);color:var(--text-2);border-color:var(--input)}
+  .btn-ghost:hover{border-color:var(--text-3);color:var(--text)}
+  .btn-rose{background:var(--rose);color:#fff;box-shadow:0 6px 16px rgba(225,29,72,.22)}
+  .btn-rose:hover{background:var(--rose-deep)}
+  .btn-locked{background:transparent;color:var(--text-3);border:1.5px dashed #D8D2C6}
+  .btn-locked:hover{color:var(--text-2);border-color:var(--text-3)}
+  .btn-sm{padding:.62rem 1rem;font-size:.7rem}
+  .btn-sm .ic{width:14px;height:14px}
+  .btn-lg{padding:1.1rem 1.9rem;font-size:.82rem}
+  @keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
+  .pop{animation:pop .5s cubic-bezier(.22,1,.36,1)}
+
+  /* ==========================================================
+     VIEWS
+  ========================================================== */
+  .view{display:none}
+  .view.active{display:block;animation:viewFade .4s ease}
+  @keyframes viewFade{from{opacity:0}to{opacity:1}}
+
+  /* ==========================================================
+     HERO BACKGROUND — cream → yellow/10 → lavender/10 + blobs
+  ========================================================== */
+  .hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+    background:linear-gradient(140deg, rgba(255,253,247,0) 30%, rgba(253,230,138,.10) 62%, rgba(196,181,253,.10) 100%)}
+  .blob{position:absolute;border-radius:50%;filter:blur(70px)}
+  .blob-amber{width:560px;height:560px;top:-180px;right:-140px;
+    background:radial-gradient(circle at 40% 40%, rgba(245,158,11,.10), rgba(245,158,11,0) 68%)}
+  .blob-lav{width:520px;height:520px;bottom:-160px;left:-160px;
+    background:radial-gradient(circle at 60% 40%, rgba(124,58,237,.10), rgba(124,58,237,0) 68%)}
+  .blob-rose{width:340px;height:340px;top:44%;left:40%;
+    background:radial-gradient(circle, rgba(251,113,133,.08), rgba(251,113,133,0) 66%)}
+
+  /* ==========================================================
+     TOP BAR
+  ========================================================== */
+  .topbar{position:sticky;top:0;z-index:40;background:rgba(255,253,247,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:1200px;margin:auto;padding:0 1.5rem;height:68px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .brand{display:inline-flex;align-items:center;gap:.65rem;background:none;border:none;cursor:pointer;padding:.3rem .2rem;color:var(--text)}
+  .brand-mark{width:26px;height:26px;display:block}
+  .brand-word{font:600 1.12rem var(--font-h);letter-spacing:-.01em;white-space:nowrap}
+  .brand-word span{color:var(--primary)}
+  .top-right{display:flex;align-items:center;gap:.8rem}
+  .hd-progress{font:600 .68rem var(--font-b);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);background:var(--card);border:1px solid var(--line-card);padding:.55rem .95rem;border-radius:999px;box-shadow:var(--shadow);white-space:nowrap;transition:.3s}
+  .hd-progress.complete{background:var(--tertiary-soft);border-color:var(--tertiary-soft);color:var(--tertiary-deep)}
+
+  /* ==========================================================
+     SCREEN 1 — HOME / DIAGRAM
+  ========================================================== */
+  #view-home{position:relative}
+  .home-grid{position:relative;z-index:1;max-width:1200px;margin:auto;padding:3rem 1.5rem 4.5rem;display:grid;grid-template-columns:minmax(330px,5fr) 7fr;gap:clamp(2.5rem,5vw,5rem);align-items:center;min-height:calc(100svh - 68px)}
+  .kicker{display:inline-flex;align-items:center;gap:.55rem;font:600 .68rem/1 var(--font-b);letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1rem;border-radius:999px}
+  .kicker .ic{width:14px;height:14px}
+  .kicker-lav{background:var(--secondary-soft);color:var(--secondary)}
+  .display{font:600 clamp(2.4rem,4.6vw,3.7rem)/1.12 var(--font-h);letter-spacing:-.02em;margin:1.4rem 0 1.3rem}
+  .display em{font-style:italic;color:var(--primary)}
+  .lede{color:var(--text-2);font-size:1.05rem;line-height:1.75;max-width:46ch}
+
+  .progress-card{margin-top:2.75rem;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem 1.6rem 1.3rem;max-width:430px}
+  .pc-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:1.1rem}
+  .pc-label{font:600 .64rem var(--font-b);letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)}
+  .pc-count{font:600 1.02rem var(--font-h)}
+  .pc-dots{display:flex;gap:1rem}
+  .p-dot{display:grid;justify-items:center;gap:.5rem;background:none;border:none;cursor:pointer;padding:.25rem;border-radius:10px}
+  .p-dot-dot{width:34px;height:34px;border-radius:50%;border:2px dashed #D8D2C6;display:grid;place-items:center;color:transparent;background:var(--card);transition:transform .25s,background .3s,border-color .3s}
+  .p-dot:hover .p-dot-dot{transform:translateY(-3px) scale(1.05);border-color:var(--dc)}
+  .p-dot.done .p-dot-dot{border:none;background:var(--dc);color:#fff}
+  .p-dot-dot .ic{width:15px;height:15px}
+  .p-dot-cap{font:600 .6rem var(--font-b);letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+  .hint{margin-top:1.9rem;display:flex;gap:.65rem;align-items:flex-start;color:var(--text-2);font-size:.95rem;max-width:44ch}
+  .hint .ic{margin-top:.18rem;color:var(--tertiary)}
+  .privacy{margin-top:1.1rem;font-size:.8rem;color:var(--text-3)}
+
+  .home-map{position:relative;display:grid;justify-items:center;gap:1.2rem}
+  .kanji{display:none;position:absolute;right:-2.2rem;top:44%;transform:translateY(-50%);writing-mode:vertical-rl;font:600 4.6rem "Hiragino Mincho ProN","Yu Mincho",serif;color:rgba(30,41,59,.05);letter-spacing:.14em;pointer-events:none;user-select:none}
+  .venn-wrap{width:100%;max-width:660px;position:relative}
+  .venn-wrap svg{width:100%;height:auto;display:block}
+  .fig-cap{font:600 .64rem var(--font-b);letter-spacing:.22em;text-transform:uppercase;color:var(--text-3);text-align:center}
+  .map-foot{display:grid;justify-items:center;gap:1rem;margin-top:.6rem}
+  .discover-msg{display:flex;align-items:center;gap:.55rem;color:var(--rose);font-size:.92rem;font-weight:600;text-align:left}
+  .discover-msg .ic{width:17px;height:17px}
+  @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
+  .shake{animation:shake .5s}
+
+  /* ---- the venn ---- */
+  .vc{cursor:pointer;outline:none;transform-box:fill-box;transform-origin:center;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+  .vc:hover,.vc:focus-visible{transform:scale(1.03)}
+  .vc-love {--sf:#FB7185; --sa:#E11D48}
+  .vc-skill{--sf:#A78BFA; --sa:#7C3AED}
+  .vc-world{--sf:#FBBF24; --sa:#F59E0B}
+  .vc-paid {--sf:#FB923C; --sa:#EA580C}
+  .c-main{fill:var(--sf);stroke:var(--sa);stroke-width:2.2;stroke-dasharray:7 7;fill-opacity:.35;mix-blend-mode:multiply;transition:fill-opacity .35s,stroke-dasharray .35s,stroke-width .35s;opacity:0;animation:vcIn .9s cubic-bezier(.22,1,.36,1) forwards}
+  .vc-love  .c-main{animation-delay:.08s}
+  .vc-skill .c-main{animation-delay:.2s}
+  .vc-world .c-main{animation-delay:.32s}
+  .vc-paid  .c-main{animation-delay:.44s}
+  @keyframes vcIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .vc:hover .c-main,.vc:focus-visible .c-main{fill-opacity:.52;stroke-dasharray:none;stroke-width:2.6}
+  .vc.done .c-main{fill-opacity:.55;stroke-dasharray:none;stroke-width:2.4}
+  .vc.done:hover .c-main{fill-opacity:.64}
+  body.all-done .c-main{fill-opacity:.58}
+  .halo{fill:none;stroke:var(--secondary);stroke-width:1.6;stroke-dasharray:3 6;opacity:0;transition:opacity .25s;pointer-events:none}
+  .vc:focus-visible .halo{opacity:.75}
+  .c-label{font:600 30px/1.18 var(--font-h);fill:var(--text);text-anchor:middle;letter-spacing:-.01em;pointer-events:none;user-select:none;opacity:0;animation:fadeIn .8s .5s forwards}
+  @keyframes fadeIn{to{opacity:1}}
+  .uline{fill:none;stroke:var(--sa);stroke-width:2.6;stroke-linecap:round;stroke-dasharray:130;stroke-dashoffset:130;opacity:.9;transition:stroke-dashoffset .55s ease .08s;pointer-events:none}
+  .vc:hover .uline,.vc:focus-visible .uline,.vc.done .uline{stroke-dashoffset:0}
+  @keyframes nudgeP{0%,100%{stroke-width:2.2}50%{stroke-width:4.2}}
+  .vc.nudge .c-main{animation:vcIn .9s cubic-bezier(.22,1,.36,1) forwards,nudgeP 2.6s ease-in-out 1.2s infinite}
+  .vc.attn .c-main{animation:vcIn 0s forwards,nudgeP .8s ease-in-out 2}
+  .ix{font:600 14px var(--font-b);fill:var(--text-2);text-anchor:middle;letter-spacing:.34em;opacity:0;transform:translateY(5px);transition:opacity .7s ease,letter-spacing .7s ease,transform .7s ease;pointer-events:none}
+  .ix.on{opacity:.9;letter-spacing:.2em;transform:none}
+  .ix-core{opacity:0;transform:scale(.72);transform-box:fill-box;transform-origin:center;transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);pointer-events:none}
+  .ix-core.on{opacity:1;transform:scale(1)}
+  .core-ring{fill:none;stroke:var(--secondary);stroke-width:1.3;stroke-dasharray:3 4;transform-box:fill-box;transform-origin:center;animation:spin 40s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .core-star{fill:var(--tertiary)}
+  .core-t{font:600 12.5px var(--font-h);fill:var(--text);text-anchor:middle;letter-spacing:.2em}
+  .stamp{transform:scale(0);opacity:0;transition:transform .5s cubic-bezier(.34,1.6,.64,1),opacity .3s}
+  .vc.done .stamp{transform:scale(1);opacity:1}
+  .stamp-bg{fill:#fff;stroke:var(--sa);stroke-width:1.6}
+  .stamp-check{fill:none;stroke:var(--sa);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+  .ix-legend{display:none;flex-wrap:wrap;justify-content:center;gap:.5rem}
+  .ixl{font:600 .62rem var(--font-b);letter-spacing:.14em;text-transform:uppercase;padding:.5rem .9rem;border-radius:999px;border:1.5px dashed #D8D2C6;color:var(--text-3);transition:.4s}
+  .ixl.on{border:1.5px solid var(--secondary);color:var(--secondary);background:var(--secondary-soft)}
+
+  /* ==========================================================
+     SCREEN 2 — QUESTIONS
+  ========================================================== */
+  .q-wrap{max-width:760px;margin-inline:auto;padding:2.2rem 1.25rem 5rem}
+  .q-top{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  .q-region{font:600 .64rem var(--font-b);letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)}
+  .q-steps{display:flex;gap:7px;margin:1.5rem 0 2.75rem}
+  .q-step-bar{height:5px;flex:1;border-radius:99px;background:#EFEAE0;transition:background .4s}
+  .q-step-bar.done{background:var(--sc)}
+  .q-step-bar.cur{background:var(--acc)}
+  .q-title{font:600 clamp(1.9rem,4.2vw,2.7rem)/1.15 var(--font-h);letter-spacing:-.02em;margin:1.1rem 0 .7rem}
+  .q-title:focus{outline:none}
+  .q-sub{color:var(--text-2);max-width:54ch}
+  .q-list{list-style:none;margin:3rem 0 .5rem;display:grid;gap:1.4rem}
+  .q-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.7rem 1.8rem;display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.2rem;transition:box-shadow .3s,transform .3s}
+  .q-card:focus-within{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .q-num{width:2.4rem;height:2.4rem;border-radius:12px;background:var(--soft);color:var(--deep);display:grid;place-items:center;font:700 .78rem var(--font-b);margin-top:.1rem}
+  .q-label{display:block;font:600 1.15rem/1.45 var(--font-h);letter-spacing:-.01em;margin-bottom:.85rem;cursor:pointer}
+  .q-item textarea{width:100%;min-height:96px;resize:none;background:var(--bg);border:1.5px solid var(--input);border-radius:12px;padding:.85rem 1.05rem;font:400 .98rem/1.6 var(--font-b);color:var(--text);transition:border-color .25s,box-shadow .25s}
+  .q-item textarea::placeholder{color:var(--text-3)}
+  .q-item textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px var(--soft)}
+  .q-foot{margin-top:2.5rem}
+  .q-error{display:flex;justify-content:flex-end;align-items:center;gap:.55rem;color:var(--rose);font-size:.92rem;font-weight:600;margin-bottom:1.1rem;text-align:right}
+  .q-error .ic{width:16px;height:16px}
+  .q-foot-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+  .q-count{font:600 .66rem var(--font-b);letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+  .q-actions{display:flex;gap:.8rem;margin-left:auto}
+  .q-wrap.leave{animation:qOut .22s ease forwards}
+  @keyframes qOut{to{opacity:0;transform:translateX(-14px)}}
+
+  /* ==========================================================
+     SCREEN 4 — RESULTS
+  ========================================================== */
+  .r-wrap{position:relative;max-width:960px;margin:auto;padding:3rem 1.25rem 5rem}
+  .r-blob{position:absolute;top:-120px;right:-120px;width:420px;height:420px;border-radius:50%;filter:blur(70px);pointer-events:none;
+    background:radial-gradient(circle at 45% 45%, rgba(245,158,11,.09), rgba(245,158,11,0) 68%)}
+  .r-head{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;padding-bottom:2.4rem;border-bottom:1px solid var(--line)}
+  .r-title{font:600 clamp(2.2rem,4.6vw,3.2rem)/1.12 var(--font-h);letter-spacing:-.02em;margin:1.2rem 0 .9rem}
+  .r-sub{color:var(--text-2);max-width:52ch}
+  .r-side{display:grid;justify-items:center;gap:.7rem;flex:none}
+  .mini-venn{width:118px;height:auto}
+  .mini-venn circle{mix-blend-mode:multiply}
+  .r-date{font:600 .62rem var(--font-b);letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+
+  .sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3.5rem}
+  .sum-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:2rem 2rem 1.8rem;transition:box-shadow .3s,transform .3s}
+  .sum-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+  .sc-num{font:700 .72rem var(--font-b);letter-spacing:.18em;color:var(--deep)}
+  .sc-badge{width:2.6rem;height:2.6rem;border-radius:12px;background:var(--soft);color:var(--deep);display:grid;place-items:center}
+  .sc-badge .ic{width:20px;height:20px}
+  .sc-title{font-size:1.35rem;margin-bottom:.7rem}
+  .sc-text{color:var(--text-2);font-size:.96rem;line-height:1.7}
+  .sc-quote{margin-top:1.3rem;padding:.95rem 1.15rem;background:var(--soft);border-radius:12px;font-style:italic;font-size:.88rem;line-height:1.6;color:var(--text)}
+  .sc-q-label{display:block;font:700 .58rem var(--font-b);font-style:normal;letter-spacing:.18em;text-transform:uppercase;color:var(--deep);margin-bottom:.4rem}
+
+  .careers-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-top:5.5rem;margin-bottom:1.6rem;flex-wrap:wrap}
+  .careers-head h2{font-size:clamp(1.7rem,3.2vw,2.3rem);letter-spacing:-.02em;margin-top:1.1rem}
+  .r-meta{display:grid;justify-items:end;gap:.6rem}
+  .sample-chip{font:700 .58rem var(--font-b);letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);border:1.5px dashed #D8D2C6;border-radius:999px;padding:.45rem .85rem}
+  .careers-note{font-size:.88rem;color:var(--text-2)}
+  .career-list{display:grid;gap:1.2rem}
+  .career{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);transition:box-shadow .3s}
+  .career:hover{box-shadow:var(--shadow-lg)}
+  .career-head{display:grid;grid-template-areas:"rank id match chev";grid-template-columns:3rem 1fr auto 2.2rem;align-items:center;gap:1.1rem;width:100%;background:none;border:none;padding:1.6rem 1.7rem;cursor:pointer;text-align:left;color:inherit;border-radius:var(--radius)}
+  .c-rank{grid-area:rank;font:600 .95rem var(--font-h);color:var(--text-3)}
+  .c-id{grid-area:id}
+  .c-name{display:block;font:600 1.28rem var(--font-h);letter-spacing:-.01em}
+  .c-tag{display:block;color:var(--text-2);font-size:.9rem;margin-top:.25rem;max-width:56ch}
+  .c-match{grid-area:match;display:grid;justify-items:end;gap:.5rem}
+  .c-pct{font:700 .84rem var(--font-b);color:var(--tertiary-deep)}
+  .meter{width:96px;height:5px;background:#F1F0EA;border-radius:99px;overflow:hidden;display:block}
+  .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--tertiary),var(--primary));border-radius:99px}
+  .c-chev{grid-area:chev;color:var(--text-3);display:grid;place-items:center;transition:transform .35s}
+  .career.open .c-chev{transform:rotate(180deg)}
+  .career-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.22,1,.36,1)}
+  .career.open .career-body{grid-template-rows:1fr}
+  .cb-inner{overflow:hidden;min-height:0}
+  .cb-pad{padding:.1rem 1.7rem 1.7rem 5.8rem}
+  .c-why{color:var(--text-2);max-width:62ch;line-height:1.7}
+  .c-pillars{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin-top:1.2rem}
+  .pl-label{font:700 .58rem var(--font-b);letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-right:.3rem}
+  .pl{font:700 .6rem var(--font-b);letter-spacing:.1em;text-transform:uppercase;padding:.45rem .85rem;border-radius:999px;display:inline-flex;align-items:center;gap:.45rem}
+  .pl::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .chip-love{background:var(--rose-soft);color:var(--rose-deep)}
+  .chip-skill{background:var(--secondary-soft);color:var(--secondary-deep)}
+  .chip-world{background:var(--tertiary-soft);color:var(--tertiary-deep)}
+  .chip-paid{background:var(--primary-soft);color:var(--primary-deep)}
+  .r-foot-note{margin:3rem 0 2.5rem;color:var(--text-3);font-size:.8rem;line-height:1.8;max-width:72ch}
+  .r-actions{display:flex;gap:.9rem;flex-wrap:wrap}
+
+  /* ==========================================================
+     OVERLAYS
+  ========================================================== */
+  .flood{position:fixed;z-index:80;border-radius:50%;pointer-events:none;transform:scale(0);will-change:transform,opacity}
+  #toast-root{position:fixed;left:0;right:0;bottom:1.5rem;display:grid;justify-items:center;z-index:95;pointer-events:none}
+  .toast{display:flex;align-items:center;gap:.65rem;background:var(--card);color:var(--text);padding:.9rem 1.4rem;border-radius:14px;box-shadow:var(--shadow-lg);border:1px solid var(--line-card);font:600 .9rem var(--font-b);transform:translateY(14px);opacity:0;transition:.35s cubic-bezier(.22,1,.36,1)}
+  .toast.in{transform:none;opacity:1}
+  .toast .ic{width:17px;height:17px;color:var(--primary)}
+  .overlay{position:fixed;inset:0;z-index:90;background:rgba(30,41,59,.35);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:grid;place-items:center;padding:1.2rem;animation:fadeIn .25s}
+  .overlay[hidden]{display:none}
+  .modal{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:2.2rem 2rem 1.8rem;max-width:440px;width:100%;animation:pop .32s cubic-bezier(.22,1,.36,1)}
+  .mo-title{font-size:1.5rem;margin-bottom:.7rem}
+  .mo-text{color:var(--text-2);line-height:1.7;font-size:.96rem}
+  .mo-actions{display:flex;justify-content:flex-end;gap:.8rem;margin-top:1.9rem;flex-wrap:wrap}
+
+  /* ==========================================================
+     RESPONSIVE
+  ========================================================== */
+  @media(min-width:1000px){.kanji{display:block}}
+  @media(max-width:999px){
+    .home-grid{grid-template-columns:1fr;min-height:auto;gap:3rem;padding-top:2.2rem}
+    .home-copy{max-width:640px}
+    .home-map{order:2;width:100%}
+  }
+  @media(max-width:700px){
+    .ix,.ix-core{display:none}
+    .ix-legend{display:flex}
+    .q-card{grid-template-columns:1fr;padding:1.4rem}
+    .q-num{margin-top:0}
+    .q-foot-row{flex-direction:column;align-items:stretch}
+    .q-actions{display:grid;grid-template-columns:1fr 1fr;margin-left:0}
+    .q-error{justify-content:flex-start}
+    .sum-grid{grid-template-columns:1fr}
+    .career-head{grid-template-areas:"rank id chev" ". match .";grid-template-columns:2.2rem 1fr 1.8rem;row-gap:.7rem;padding:1.3rem 1.3rem}
+    .c-match{display:flex;align-items:center;gap:.7rem;justify-items:start}
+    .cb-pad{padding:.1rem 1.3rem 1.5rem}
+    .r-head{flex-direction:column;align-items:flex-start;gap:1.5rem}
+    .r-meta{justify-items:start}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR (persistent shell) ============ -->
+<header class="topbar">
+  <div class="topbar-in">
+    <button class="brand" data-action="home" aria-label="Ikigai Atlas — back to the diagram">
+      <svg class="brand-mark" viewBox="0 0 26 26" aria-hidden="true">
+        <circle cx="10" cy="10" r="6.4" fill="#FB7185" fill-opacity=".85" style="mix-blend-mode:multiply"/>
+        <circle cx="16" cy="10" r="6.4" fill="#A78BFA" fill-opacity=".85" style="mix-blend-mode:multiply"/>
+        <circle cx="10" cy="16" r="6.4" fill="#FBBF24" fill-opacity=".85" style="mix-blend-mode:multiply"/>
+        <circle cx="16" cy="16" r="6.4" fill="#FB923C" fill-opacity=".85" style="mix-blend-mode:multiply"/>
+      </svg>
+      <span class="brand-word">Ikigai <span>Atlas</span></span>
+    </button>
+    <div class="top-right">
+      <span class="hd-progress" id="hd-progress">0 / 4 completed</span>
+      <button class="btn btn-ghost btn-sm" id="btn-restart-top" data-action="restart" hidden>
+        <span data-ic="redo"></span><span>Start over</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ SCREEN 1 — IKIGAI DIAGRAM ============ -->
+  <section id="view-home" class="view active" aria-label="Ikigai diagram">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="blob blob-amber"></div>
+      <div class="blob blob-lav"></div>
+      <div class="blob blob-rose"></div>
+    </div>
+    <div class="home-grid">
+      <div class="home-copy">
+        <span class="kicker kicker-lav reveal"><span data-ic="map"></span>An interactive career exploration</span>
+        <h1 class="display reveal" style="--d:80ms">Four questions.<br>One <em>point</em> where they all meet.</h1>
+        <p class="lede reveal" style="--d:160ms">Ikigai — <strong>iki</strong> (life) and <strong>gai</strong> (worth) — is the spot where what you love, what you're good at, what the world needs, and what you can be paid for overlap. Answer three honest questions for each circle, and watch your map fill in.</p>
+
+        <div class="progress-card reveal" style="--d:240ms">
+          <div class="pc-top">
+            <span class="pc-label">Your map</span>
+            <span class="pc-count" id="pc-count">0 / 4 completed</span>
+          </div>
+          <div class="pc-dots">
+            <button class="p-dot" data-sec="love"><span class="p-dot-dot"></span><span class="p-dot-cap">Love</span></button>
+            <button class="p-dot" data-sec="skill"><span class="p-dot-dot"></span><span class="p-dot-cap">Skill</span></button>
+            <button class="p-dot" data-sec="world"><span class="p-dot-dot"></span><span class="p-dot-cap">World</span></button>
+            <button class="p-dot" data-sec="paid"><span class="p-dot-dot"></span><span class="p-dot-cap">Paid</span></button>
+          </div>
+        </div>
+
+        <p class="hint reveal" style="--d:320ms" id="home-hint"></p>
+        <p class="privacy reveal" style="--d:380ms">Your answers stay in this browser — nothing is sent anywhere.</p>
+      </div>
+
+      <div class="home-map reveal" style="--d:200ms">
+        <span class="kanji" aria-hidden="true">生き甲斐</span>
+        <figure class="venn-wrap">
+          <svg id="venn" viewBox="0 0 780 660" role="group" aria-label="Ikigai diagram — four overlapping circles. Select a circle to open its questions.">
+            <!-- What do I love? -->
+            <g class="vc vc-love" id="vc-love" data-sec="love" role="button" tabindex="0" aria-label="What do I love? Not charted yet. Open this section.">
+              <circle class="halo" cx="265" cy="240" r="193"/>
+              <circle class="c-main" cx="265" cy="240" r="185"/>
+              <text class="c-label" x="175" y="160">What do<tspan x="175" y="194">I love?</tspan></text>
+              <path class="uline" d="M125 207 Q150 215 175 208 T225 206"/>
+            </g>
+            <!-- What am I good at? -->
+            <g class="vc vc-skill" id="vc-skill" data-sec="skill" role="button" tabindex="0" aria-label="What am I good at? Not charted yet. Open this section.">
+              <circle class="halo" cx="515" cy="240" r="193"/>
+              <circle class="c-main" cx="515" cy="240" r="185"/>
+              <text class="c-label" x="605" y="160">What am I<tspan x="605" y="194">good at?</tspan></text>
+              <path class="uline" d="M555 207 Q580 215 605 208 T655 206"/>
+            </g>
+            <!-- What does the world need? -->
+            <g class="vc vc-world" id="vc-world" data-sec="world" role="button" tabindex="0" aria-label="What does the world need? Not charted yet. Open this section.">
+              <circle class="halo" cx="265" cy="420" r="193"/>
+              <circle class="c-main" cx="265" cy="420" r="185"/>
+              <text class="c-label" x="230" y="488">What does the<tspan x="230" y="522">world need?</tspan></text>
+              <path class="uline" d="M180 538 Q205 546 230 539 T280 537"/>
+            </g>
+            <!-- What can I be paid for? -->
+            <g class="vc vc-paid" id="vc-paid" data-sec="paid" role="button" tabindex="0" aria-label="What can I be paid for? Not charted yet. Open this section.">
+              <circle class="halo" cx="515" cy="420" r="193"/>
+              <circle class="c-main" cx="515" cy="420" r="185"/>
+              <text class="c-label" x="550" y="488">What can I be<tspan x="550" y="522">paid for?</tspan></text>
+              <path class="uline" d="M500 543 Q525 551 550 544 T600 542"/>
+            </g>
+
+            <!-- Intersection words: revealed when both of their circles are charted -->
+            <text class="ix" id="ix-passion" x="390" y="192">PASSION</text>
+            <text class="ix" id="ix-mission" x="200" y="332">MISSION</text>
+            <text class="ix" id="ix-profession" x="580" y="332">PROFESSION</text>
+            <text class="ix" id="ix-vocation" x="390" y="452">VOCATION</text>
+
+            <!-- Center seal: revealed at 4 / 4 -->
+            <g class="ix-core" id="ix-ikigai">
+              <circle class="core-ring" cx="390" cy="329" r="23"/>
+              <path class="core-star" d="M390 311l1.6 4.1 4.1 1.6-4.1 1.6-1.6 4.1-1.6-4.1-4.1-1.6 4.1-1.6 1.6-4.1z"/>
+              <text class="core-t" x="390" y="346">IKIGAI</text>
+            </g>
+
+            <!-- Completion seals, pinned to each circle's rim -->
+            <g transform="translate(80 240)"><g class="stamp"><circle class="stamp-bg" r="15"/><path class="stamp-check" d="M-5.5 .5 -1.5 4.5 6 -4.5"/></g></g>
+            <g transform="translate(700 240)"><g class="stamp"><circle class="stamp-bg" r="15"/><path class="stamp-check" d="M-5.5 .5 -1.5 4.5 6 -4.5"/></g></g>
+            <g transform="translate(80 420)"><g class="stamp"><circle class="stamp-bg" r="15"/><path class="stamp-check" d="M-5.5 .5 -1.5 4.5 6 -4.5"/></g></g>
+            <g transform="translate(700 420)"><g class="stamp"><circle class="stamp-bg" r="15"/><path class="stamp-check" d="M-5.5 .5 -1.5 4.5 6 -4.5"/></g></g>
+          </svg>
+          <figcaption class="fig-cap">Four regions · one center · yours to chart</figcaption>
+        </figure>
+
+        <div class="ix-legend" aria-hidden="true">
+          <span class="ixl" data-ix="passion">Passion</span>
+          <span class="ixl" data-ix="mission">Mission</span>
+          <span class="ixl" data-ix="profession">Profession</span>
+          <span class="ixl" data-ix="vocation">Vocation</span>
+          <span class="ixl" data-ix="ikigai">Ikigai</span>
+        </div>
+
+        <div class="map-foot">
+          <button class="btn btn-locked btn-lg" id="btn-discover"><span>Discover Possible Career Paths</span></button>
+          <p class="discover-msg" id="discover-msg" role="status" hidden></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2 — QUESTIONS (rendered by JS) ============ -->
+  <section id="view-questions" class="view" aria-label="Section questions"></section>
+
+  <!-- ============ SCREEN 4 — RESULTS (rendered by JS) ============ -->
+  <section id="view-results" class="view" aria-label="Results"></section>
+</main>
+
+<div id="toast-root" aria-live="polite"></div>
+
+<!-- Start-over confirmation -->
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mo-t">
+    <h3 class="mo-title" id="mo-t">Start over?</h3>
+    <p class="mo-text">This clears every saved answer and un-charts all four regions of your map. There's no undo.</p>
+    <div class="mo-actions">
+      <button class="btn btn-ghost" id="mo-cancel">Keep my answers</button>
+      <button class="btn btn-rose" id="mo-confirm">Yes, clear my map</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   1) CONTENT DATA — the four regions and their questions
+   Each region carries its own colour (accent / fill / soft / deep)
+===================================================================== */
+const SECTIONS = [
+  {
+    id:'love', num:'01', region:'Region 01', kicker:'What you love',
+    title:'What do I love?', icon:'heart',
+    accent:'#E11D48', fill:'#FB7185', soft:'#FFE4E6', deep:'#BE123C',
+    blurb:'Three questions about joy. Fragments are fine — honesty beats polish.',
+    questions:[
+      { q:'What did you want to be when you were a kid?',
+        ph:'e.g. A veterinarian — I was sure I\u2019d speak \u201ccat\u201d one day\u2026' },
+      { q:'What hobbies or activities make you lose track of time now?',
+        ph:'e.g. Sketching UI ideas, chess, rebuilding my old bike\u2026' },
+      { q:'What would you do for free, just because it brings you joy?',
+        ph:'e.g. Explaining course material to friends until it clicks\u2026' },
+    ],
+  },
+  {
+    id:'skill', num:'02', region:'Region 02', kicker:'What you\u2019re good at',
+    title:'What am I good at?', icon:'star',
+    accent:'#7C3AED', fill:'#A78BFA', soft:'#EDE9FE', deep:'#6D28D9',
+    blurb:'Three questions about ease. Notice what feels ordinary to you — that\u2019s often the clue.',
+    questions:[
+      { q:'What activities do you perform with ease that others find challenging?',
+        ph:'e.g. Turning a messy 40-page brief into a one-page summary\u2026' },
+      { q:'In what areas do people often seek your advice or assistance?',
+        ph:'e.g. CV feedback, stats homework, fixing everyone\u2019s laptop\u2026' },
+      { q:'Reflect on past achievements: What were you doing when you felt most successful and competent?',
+        ph:'e.g. Leading our robotics team to the national finals\u2026' },
+    ],
+  },
+  {
+    id:'world', num:'03', region:'Region 03', kicker:'What the world needs',
+    title:'What does the world need?', icon:'globe',
+    accent:'#F59E0B', fill:'#FBBF24', soft:'#FEF3C7', deep:'#B45309',
+    blurb:'Three questions about the mark you want to leave. Think locally and globally.',
+    questions:[
+      { q:'What causes or issues do you care about?',
+        ph:'e.g. Education access, mental health, the climate\u2026' },
+      { q:'How can your unique skills and passions contribute to solving these issues?',
+        ph:'e.g. My coding plus patience could become free learning tools\u2026' },
+      { q:'Who are the people or groups you feel compelled to help or support?',
+        ph:'e.g. First-generation students, kids who think science \u201cisn\u2019t for them\u201d\u2026' },
+    ],
+  },
+  {
+    id:'paid', num:'04', region:'Region 04', kicker:'What you can be paid for',
+    title:'What can I be paid for?', icon:'coin',
+    accent:'#EA580C', fill:'#FB923C', soft:'#FFEDD5', deep:'#C2410C',
+    blurb:'Three questions about value. Think in problems people already pay to solve.',
+    questions:[
+      { q:'How might you help other people make money and capture some of the value?',
+        ph:'e.g. Freelance sites for local shops, tutoring that lifts grades\u2026' },
+      { q:'How might you help other people save time?',
+        ph:'e.g. Automating the boring parts of club admin\u2026' },
+      { q:'How might you entertain or inspire others?',
+        ph:'e.g. Study videos people actually enjoy watching\u2026' },
+    ],
+  },
+];
+const SEC_BY_ID = Object.fromEntries(SECTIONS.map(s=>[s.id,s]));
+const AREA_LABEL = { love:'Love', skill:'Good at', world:'World needs', paid:'Paid for' };
+const IX_PAIRS = { passion:['love','skill'], mission:['love','world'], profession:['skill','paid'], vocation:['world','paid'] };
+
+/* =====================================================================
+   2) SAMPLE RESULTS + RESULTS PIPELINE  ◀── swap point for the AI step
+   ---------------------------------------------------------------------
+   Now  : user answers ──▶ (ignored) ──▶ sample summaries + sample careers
+   Later: user answers ──▶ AI analysis ──▶ { summaries, careers }
+   The rest of the app only ever calls generateResults(answers), so when
+   the AI layer arrives, only this function's body needs to change.
+===================================================================== */
+const SAMPLE_SUMMARIES = {
+  love:  'You\u2019re pulled toward curiosity-driven work — technology, storytelling, and explaining how things work. Joy, for you, lives where understanding meets expression.',
+  skill: 'A rare mix of analytical thinking and clear communication. People bring you tangled problems, and you\u2019re most confident when you turn hard ideas into something anyone can grasp.',
+  world: 'You want knowledge to be accessible — especially for students and first-generation learners who feel technical fields aren\u2019t \u201cfor them\u201d. Clarity, to you, is a form of fairness.',
+  paid:  'Value, for you, comes from teaching, simplifying and building: tutoring, educational content, tools that give people their time back. You\u2019re drawn to work where insight is the product.',
+};
+const SAMPLE_CAREERS = [
+  { name:'AI/ML Engineer', match:94, pillars:['love','skill','paid'],
+    tagline:'Combines an interest in technology and problem-solving with strong analytical skills.',
+    why:'Your notes point at one intersection again and again: you love understanding how things work, you\u2019re unusually at ease with analytical problems, and entire industries pay well for exactly that. Machine learning also leaves room for the communicator in you — explaining models to people who\u2019ll never read the math.' },
+  { name:'Data Scientist', match:88, pillars:['skill','paid','love'],
+    tagline:'Combines analytical thinking, curiosity, and the ability to find patterns in information.',
+    why:'Finding signal in mess is the through-line of your answers. Data work rewards the patience to sit with a problem until it makes sense — and the clarity to then explain it in one page, which is already your instinct.' },
+  { name:'UX Designer', match:81, pillars:['love','skill','paid'],
+    tagline:'Combines creativity, understanding people, and solving practical problems.',
+    why:'You notice where people get stuck, and you enjoy making complicated things feel simple. Design is the craft version of that instinct — practical, human, and reliably paid.' },
+  { name:'Science Communicator', match:76, pillars:['love','world','skill'],
+    tagline:'Combines curiosity, communication, and the desire to make complex ideas understandable.',
+    why:'The clearest signal in your map: knowledge only counts for you once it\u2019s shared. This path turns explaining into the job itself — mission first, with growing ways to make it sustainable.' },
+  { name:'Research Scientist', match:70, pillars:['skill','love','world'],
+    tagline:'Combines deep curiosity, problem-solving, and interest in discovering new knowledge.',
+    why:'If the lab and the library felt like home in your answers, research offers the deepest version of curiosity — open questions, careful method, and results that outlive you.' },
+];
+function generateResults(answers){
+  /* TODO(AI): replace the body below with a call to the analysis layer.
+     Contract — input:  answers = { love:[3], skill:[3], world:[3], paid:[3] }
+                output: { summaries:{love,skill,world,paid}, careers:[{name,tagline,match,pillars,why}] } */
+  return { summaries: SAMPLE_SUMMARIES, careers: SAMPLE_CAREERS, source:'sample' };
+}
+
+/* =====================================================================
+   3) STATE + persistence (localStorage)
+===================================================================== */
+const STORE_KEY = 'ikigai-atlas-v1';
+const freshState = () => ({
+  answers:   Object.fromEntries(SECTIONS.map(s=>[s.id,['','','']])),
+  completed: Object.fromEntries(SECTIONS.map(s=>[s.id,false])),
+});
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return null;
+    const d = JSON.parse(raw);
+    if(!d || !d.answers || !d.completed) return null;
+    SECTIONS.forEach(s=>{
+      let a = Array.isArray(d.answers[s.id]) ? d.answers[s.id] : [];
+      a = a.slice(0,3).map(v=>typeof v==='string'?v:'');
+      while(a.length<3) a.push('');
+      d.answers[s.id]=a; d.completed[s.id]=!!d.completed[s.id];
+    });
+    return d;
+  }catch(e){ return null; }
+}
+let state = loadState() || freshState();
+const persist = () => { try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} };
+const completedCount = () => SECTIONS.filter(s=>state.completed[s.id]).length;
+const allComplete = () => completedCount()===4;
+
+/* =====================================================================
+   4) UTILITIES — icons (thin-stroke, Lucide style), escaping, helpers
+===================================================================== */
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function truncate(s,n){ s=s.trim().replace(/\s+/g,' '); if(s.length<=n) return s; const c=s.slice(0,n); return c.slice(0, c.lastIndexOf(' '))+' \u2026'; }
+
+const IC = {
+  arrowR:'<path d="M4.5 12h15M13.5 6l6 6-6 6"/>',
+  arrowL:'<path d="M19.5 12h-15M10.5 6l-6 6 6 6"/>',
+  check:'<path d="M4.5 12.5l4.8 4.8L19.5 6.5"/>',
+  chevD:'<path d="M6 9.5l6 6 6-6"/>',
+  redo:'<path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/>',
+  lock:'<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  alert:'<path d="M12 4 2.8 19.5h18.4L12 4z"/><path d="M12 10v4.5"/><path d="M12 17.6h.01"/>',
+  compass:'<circle cx="12" cy="12" r="9"/><path d="m15.2 8.8-1.8 4.6-4.6 1.8 1.8-4.6 4.6-1.8z"/>',
+  heart:'<path d="M12 20.3C7.7 17.2 3.5 13.9 3.5 9.9a4.6 4.6 0 0 1 8.5-2.5 4.6 4.6 0 0 1 8.5 2.5c0 4-4.2 7.3-8.5 10.4z"/>',
+  star:'<path d="m12 4 2.2 4.9 5.3.6-4 3.6 1.1 5.2L12 15.6l-4.6 2.7 1.1-5.2-4-3.6 5.3-.6L12 4z"/>',
+  globe:'<circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c2.5 2.3 3.8 5.3 3.8 8.6s-1.3 6.3-3.8 8.6c-2.5-2.3-3.8-5.3-3.8-8.6s1.3-6.3 3.8-8.6z"/>',
+  coin:'<circle cx="12" cy="12" r="8.6"/><path d="M12 7.2v9.6M14.8 9.3c-.5-.8-1.6-1.3-2.8-1.3-1.7 0-3 .9-3 2s1.3 1.6 3 2 3 .9 3 2-1.3 2-3 2c-1.2 0-2.3-.5-2.8-1.3"/>',
+  spark:'<path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18l-1.8-5.4L4.5 10.8 10.2 9 12 3.5z"/>',
+  map:'<path d="m9 4.5-5.5 2v13l5.5-2 6 2 5.5-2v-13l-5.5 2-6-2z"/><path d="M9 4.5v13M15 6.5v13"/>',
+};
+const icon = (n,c='') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
+
+/* =====================================================================
+   5) SCROLL-REVEAL — soft fade-up only
+===================================================================== */
+const revealObs = ('IntersectionObserver' in window && !REDUCED)
+  ? new IntersectionObserver(entries=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){ en.target.classList.add('in'); revealObs.unobserve(en.target); }
+      });
+    },{ threshold:.1, rootMargin:'0px 0px -40px 0px' })
+  : null;
+function initReveal(root){
+  (root||document).querySelectorAll('.reveal').forEach(el=>{
+    if(el.classList.contains('in')) return;
+    if(revealObs) revealObs.observe(el); else el.classList.add('in');
+  });
+}
+function resetReveal(root){
+  (root||document).querySelectorAll('.reveal.in').forEach(el=>el.classList.remove('in'));
+}
+
+/* =====================================================================
+   6) TOAST + MODAL
+===================================================================== */
+let toastTimer;
+function toast(msg, ic='check'){
+  const root = $('#toast-root');
+  root.innerHTML = `<div class="toast">${icon(ic)}<span>${esc(msg)}</span></div>`;
+  const t = root.firstElementChild;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('in')));
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.classList.remove('in'); setTimeout(()=>t.remove(),380); }, 2600);
+}
+const overlay = $('#overlay');
+function openModal(){ overlay.hidden=false; $('#mo-cancel').focus(); }
+function closeModal(){ overlay.hidden=true; }
+overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+
+/* =====================================================================
+   7) VIEW SWITCHING + the soft colour-wash transition
+===================================================================== */
+const views = { home:$('#view-home'), questions:$('#view-questions'), results:$('#view-results') };
+function setView(name){
+  Object.entries(views).forEach(([k,v])=>v.classList.toggle('active', k===name));
+  window.scrollTo({ top:0, behavior: REDUCED ? 'auto' : 'smooth' });
+}
+let navLock = false;
+function floodTo(color, rect, onCovered){
+  const f = document.createElement('div');
+  f.className='flood'; f.style.background=color;
+  const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+  const R = Math.hypot(Math.max(cx, innerWidth-cx), Math.max(cy, innerHeight-cy)) + 60;
+  Object.assign(f.style,{ width:R*2+'px', height:R*2+'px', left:cx-R+'px', top:cy-R+'px' });
+  document.body.appendChild(f);
+  const a1 = f.animate([{transform:'scale(0)'},{transform:'scale(1)'}],
+    { duration:460, easing:'cubic-bezier(.45,.05,.25,1)', fill:'forwards' });
+  a1.onfinish = () => {
+    onCovered();
+    const a2 = f.animate([{opacity:1},{opacity:0}],
+      { duration:430, easing:'ease-out', fill:'forwards', delay:70 });
+    a2.onfinish = () => f.remove();
+  };
+}
+function openSection(id, originEl){
+  if(navLock) return;
+  const s = SEC_BY_ID[id];
+  const go = () => {
+    renderQuestions(id); setView('questions'); initReveal(views.questions);
+    document.title = `${s.title} — Ikigai Atlas`;
+    const t=$('#q-title'); if(t) t.focus({ preventScroll:true });
+    if(navLock){ navLock=false; }
+  };
+  if(originEl && !REDUCED){
+    navLock = true;
+    floodTo(s.soft, originEl.getBoundingClientRect(), go);   // gentle sector-tinted wash
+    setTimeout(()=>{ navLock=false; }, 1100);                 // safety release
+  } else go();
+}
+function goHome(){
+  setView('home');
+  document.title = 'Ikigai Atlas — Career Discovery';
+  resetReveal(views.home);
+  requestAnimationFrame(()=>initReveal(views.home));
+}
+
+/* =====================================================================
+   8) HOME — progress, venn state, discover button
+===================================================================== */
+function renderAll(){
+  const done = completedCount(), all = done===4;
+
+  // circles
+  SECTIONS.forEach(s=>{
+    const g = $('#vc-'+s.id), c = !!state.completed[s.id];
+    g.classList.toggle('done', c);
+    g.setAttribute('aria-label', `${s.title} — ${c?'Completed. Open to edit.':'Not charted yet. Open this section.'}`);
+    g.classList.toggle('nudge', done===0);
+  });
+  // intersection words
+  Object.entries(IX_PAIRS).forEach(([k,[a,b]])=>
+    $('#ix-'+k).classList.toggle('on', state.completed[a] && state.completed[b]));
+  $('#ix-ikigai').classList.toggle('on', all);
+  document.body.classList.toggle('all-done', all);
+  // mobile legend
+  $$('.ixl').forEach(ch=>{
+    const k = ch.dataset.ix;
+    ch.classList.toggle('on', k==='ikigai' ? all : IX_PAIRS[k].every(x=>state.completed[x]));
+  });
+  // progress texts
+  const hd = $('#hd-progress');
+  hd.textContent = `${done} / 4 completed`;
+  hd.classList.toggle('complete', all);
+  $('#pc-count').textContent = `${done} / 4 completed`;
+  // dots
+  $$('.p-dot').forEach(d=>{
+    const s = SEC_BY_ID[d.dataset.sec], c = !!state.completed[s.id];
+    d.classList.toggle('done', c);
+    d.style.setProperty('--dc', s.accent);
+    d.querySelector('.p-dot-dot').innerHTML = c ? icon('check') : '';
+    d.setAttribute('aria-label', `Open \u201c${s.title}\u201d — ${c?'completed, tap to edit':'not completed yet'}`);
+  });
+  // discover button + hint + restart visibility
+  updateDiscover();
+  $('#home-hint').innerHTML = all
+    ? `${icon('spark')}<span>Your map is complete — every overlap is filled in. Time to see where it points.</span>`
+    : `${icon('compass')}<span>Start anywhere — each circle takes about two minutes. There are no wrong answers.</span>`;
+  $('#btn-restart-top').hidden = done===0;
+}
+function updateDiscover(){
+  const b = $('#btn-discover'), all = allComplete(), msg = $('#discover-msg');
+  msg.hidden = all;
+  if(all){
+    const wasLocked = b.classList.contains('btn-locked');
+    b.className = 'btn btn-primary btn-lg' + (wasLocked && !REDUCED ? ' pop' : '');
+    b.innerHTML = `<span>Discover Possible Career Paths</span>${icon('arrowR')}`;
+  }else{
+    b.className = 'btn btn-locked btn-lg';
+    b.innerHTML = `${icon('lock')}<span>Discover Possible Career Paths</span>`;
+  }
+}
+ $('#btn-discover').addEventListener('click', ()=>{
+  if(allComplete()){
+    buildResults(); setView('results'); initReveal(views.results);
+    document.title = 'Your Ikigai Exploration — Ikigai Atlas';
+    return;
+  }
+  const msg = $('#discover-msg');
+  msg.innerHTML = `${icon('alert')}<span>Complete all four sections to discover your possible career paths.</span>`;
+  msg.hidden = false;
+  msg.classList.remove('shake'); void msg.offsetWidth; msg.classList.add('shake');
+  $$('.vc').forEach(g=>{
+    if(!state.completed[g.dataset.sec]){
+      g.classList.remove('attn'); void g.getBoundingClientRect();
+      g.classList.add('attn');
+      setTimeout(()=>g.classList.remove('attn'), 1700);
+    }
+  });
+});
+
+/* =====================================================================
+   9) QUESTIONS — render, validate, save, continue
+===================================================================== */
+let currentSec = null;
+function questionTemplate(s){
+  return `
+  <div class="q-wrap" style="--acc:${s.accent};--soft:${s.soft};--deep:${s.deep}">
+    <div class="q-top reveal">
+      <button class="btn btn-secondary btn-sm" data-action="home">${icon('arrowL')}<span>Back to Ikigai</span></button>
+      <span class="q-region">${s.region} / 04</span>
+    </div>
+    <div class="q-steps reveal" style="--d:60ms" aria-hidden="true">
+      ${SECTIONS.map(x=>`<span class="q-step-bar ${x.id===s.id?'cur':''} ${state.completed[x.id]?'done':''}" style="--sc:${x.accent}"></span>`).join('')}
+    </div>
+    <header class="reveal" style="--d:120ms">
+      <span class="kicker" style="background:${s.soft};color:${s.deep}"><span class="ic" style="width:9px;height:9px;border-radius:50%;background:${s.fill};display:inline-block"></span>${s.kicker}</span>
+      <h1 class="q-title" id="q-title" tabindex="-1">${s.title}</h1>
+      <p class="q-sub">${s.blurb}</p>
+    </header>
+    <ol class="q-list">
+      ${s.questions.map((item,i)=>`
+      <li class="q-card q-item reveal" style="--d:${180 + i*110}ms;--acc:${s.accent};--soft:${s.soft};--deep:${s.deep}">
+        <span class="q-num" aria-hidden="true">Q${i+1}</span>
+        <div>
+          <label class="q-label" for="qa-${s.id}-${i}">${item.q}</label>
+          <textarea id="qa-${s.id}-${i}" data-i="${i}" rows="3" placeholder="${item.ph}">${esc(state.answers[s.id][i]||'')}</textarea>
+        </div>
+      </li>`).join('')}
+    </ol>
+    <div class="q-foot reveal" style="--d:480ms">
+      <p class="q-error" id="q-error" role="alert" hidden></p>
+      <div class="q-foot-row">
+        <span class="q-count" id="q-count"></span>
+        <div class="q-actions">
+          <button class="btn btn-ghost" data-action="home">${icon('arrowL')}<span>Back to Ikigai</span></button>
+          <button class="btn btn-primary" id="q-save"><span>Save &amp; Continue</span>${icon('arrowR')}</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function fit(t){ t.style.height='auto'; t.style.height=Math.max(t.scrollHeight, 96)+'px'; }
+function updateQCount(){
+  const n = $$('#view-questions textarea').filter(t=>t.value.trim()).length;
+  $('#q-count').textContent = `${n} / 3 answered`;
+}
+function renderQuestions(id){
+  currentSec = id;
+  const s = SEC_BY_ID[id];
+  $('#view-questions').innerHTML = questionTemplate(s);
+  $$('#view-questions textarea').forEach(t=>{
+    fit(t);
+    t.addEventListener('input', ()=>{ fit(t); updateQCount(); $('#q-error').hidden = true; });
+  });
+  updateQCount();
+  $('#q-save').addEventListener('click', saveSection);
+}
+function saveSection(){
+  const s = SEC_BY_ID[currentSec];
+  const vals = $$('#view-questions textarea').map(t=>t.value.trim());
+  const left = 3 - vals.filter(Boolean).length;
+  if(left > 0){
+    const e = $('#q-error');
+    e.innerHTML = `${icon('alert')}<span>${left===3
+      ? 'Answer all three questions to chart this region.'
+      : `Answer ${left} more question${left>1?'s':''} to chart this region.`}</span>`;
+    e.hidden = false;
+    e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake');
+    return;
+  }
+  state.answers[s.id] = vals;
+  state.completed[s.id] = true;
+  persist(); renderAll();
+  const next = SECTIONS.find(x=>!state.completed[x.id]);
+  if(next){
+    toast(`Saved — \u201c${s.title}\u201d is charted`, 'check');
+    setTimeout(()=>swapTo(next.id), 350);
+  }else{
+    setTimeout(()=>{ goHome(); toast('All four regions charted — welcome to your center', 'spark'); }, 300);
+  }
+}
+function swapTo(id){
+  const wrap = $('#view-questions .q-wrap');
+  if(wrap) wrap.classList.add('leave');
+  setTimeout(()=>{
+    renderQuestions(id); setView('questions'); initReveal(views.questions);
+    document.title = `${SEC_BY_ID[id].title} — Ikigai Atlas`;
+    window.scrollTo({ top:0, behavior: REDUCED ? 'auto' : 'smooth' });
+    const t=$('#q-title'); if(t) t.focus({ preventScroll:true });
+  }, 210);
+}
+
+/* =====================================================================
+   10) RESULTS — built from generateResults(), ready for the AI step
+===================================================================== */
+function firstAnswer(id){ return (state.answers[id]||[]).find(v=>v && v.trim()) || ''; }
+function resultsTemplate(res){
+  const dateStr = new Date().toLocaleDateString(undefined,{ year:'numeric', month:'long', day:'numeric' });
+  const cards = SECTIONS.map((s,i)=>{
+    const quote = firstAnswer(s.id);
+    return `
+    <article class="sum-card reveal" style="--acc:${s.accent};--soft:${s.soft};--deep:${s.deep};--d:${i*110}ms">
+      <div class="sc-top"><span class="sc-num">${s.num}</span><span class="sc-badge">${icon(s.icon)}</span></div>
+      <h3 class="sc-title">${s.title}</h3>
+      <p class="sc-text">${esc(res.summaries[s.id])}</p>
+      ${quote ? `<p class="sc-quote"><span class="sc-q-label">From your notes</span>\u201c${esc(truncate(quote,120))}\u201d</p>` : ''}
+    </article>`;
+  }).join('');
+  const careers = res.careers.map((c,i)=>`
+    <article class="career reveal" style="--d:${i*90}ms">
+      <button class="career-head" aria-expanded="false">
+        <span class="c-rank">${String(i+1).padStart(2,'0')}</span>
+        <span class="c-id"><span class="c-name">${esc(c.name)}</span><span class="c-tag">${esc(c.tagline)}</span></span>
+        <span class="c-match" role="img" aria-label="Match strength: ${c.match} percent">
+          <span class="c-pct">${c.match}%</span>
+          <span class="meter" aria-hidden="true"><i style="width:${c.match}%"></i></span>
+        </span>
+        <span class="c-chev">${icon('chevD')}</span>
+      </button>
+      <div class="career-body"><div class="cb-inner"><div class="cb-pad">
+        <p class="c-why">${esc(c.why)}</p>
+        <div class="c-pillars">
+          <span class="pl-label">Drawn from</span>
+          ${c.pillars.map(p=>`<span class="pl chip-${p}">${AREA_LABEL[p]}</span>`).join('')}
+        </div>
+      </div></div></div>
+    </article>`).join('');
+  return `
+  <div class="r-wrap">
+    <div class="r-blob" aria-hidden="true"></div>
+    <header class="r-head">
+      <div>
+        <span class="kicker kicker-lav reveal"><span data-ic="compass"></span>Your personal map · charted</span>
+        <h1 class="r-title reveal" style="--d:80ms">Your Ikigai Exploration</h1>
+        <p class="r-sub reveal" style="--d:160ms">A snapshot of your four regions — and the paths that sit closest to your center.</p>
+      </div>
+      <div class="r-side reveal" style="--d:200ms">
+        <svg class="mini-venn" viewBox="0 0 128 116" aria-hidden="true">
+          <circle cx="50" cy="46" r="30" fill="#FB7185" fill-opacity=".85"/>
+          <circle cx="78" cy="46" r="30" fill="#A78BFA" fill-opacity=".85"/>
+          <circle cx="50" cy="70" r="30" fill="#FBBF24" fill-opacity=".85"/>
+          <circle cx="78" cy="70" r="30" fill="#FB923C" fill-opacity=".85"/>
+          <circle cx="64" cy="58" r="3.4" fill="#1E293B"/>
+        </svg>
+        <span class="r-date">Charted · ${esc(dateStr)}</span>
+      </div>
+    </header>
+
+    <div class="sum-grid">${cards}</div>
+
+    <div class="careers-head reveal">
+      <div>
+        <span class="kicker kicker-lav"><span data-ic="spark"></span>Cross-referencing your four regions</span>
+        <h2>Possible Career Paths</h2>
+      </div>
+      <div class="r-meta">
+        <span class="sample-chip">Sample results · preview</span>
+        <span class="careers-note">Tap a path to see why it fits you.</span>
+      </div>
+    </div>
+    <div class="career-list">${careers}</div>
+
+    <p class="r-foot-note reveal">Note — Preview build: the summaries and paths above are sample data. In the next version, your saved answers feed an analysis step that generates them from your own words.</p>
+
+    <div class="r-actions reveal">
+      <button class="btn btn-secondary" data-action="home">${icon('arrowL')}<span>Back to my map</span></button>
+      <button class="btn btn-ghost" data-action="restart">${icon('redo')}<span>Start over</span></button>
+    </div>
+  </div>`;
+}
+function buildResults(){
+  $('#view-results').innerHTML = resultsTemplate(generateResults(state.answers));
+}
+// expandable career rows (delegated — survives re-renders)
+ $('#view-results').addEventListener('click', e=>{
+  const head = e.target.closest('.career-head');
+  if(!head) return;
+  const open = head.closest('.career').classList.toggle('open');
+  head.setAttribute('aria-expanded', open);
+});
+
+/* =====================================================================
+   11) GLOBAL WIRING + INIT
+===================================================================== */
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-action]');
+  if(!t) return;
+  if(t.dataset.action==='home') goHome();
+  if(t.dataset.action==='restart') openModal();
+});
+ $('#mo-cancel').addEventListener('click', closeModal);
+ $('#mo-confirm').addEventListener('click', ()=>{
+  state = freshState(); persist();
+  closeModal(); renderAll(); goHome();
+  toast('Fresh map — everything cleared', 'redo');
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    if(!overlay.hidden){ closeModal(); return; }
+    if(views.questions.classList.contains('active') && !/TEXTAREA|INPUT/.test(e.target.tagName)) goHome();
+  }
+});
+// circles → dive in (mouse + keyboard)
+ $$('.vc').forEach(g=>{
+  const open = ()=>openSection(g.dataset.sec, g.querySelector('.c-main'));
+  g.addEventListener('click', open);
+  g.addEventListener('keydown', e=>{
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); }
+  });
+});
+// progress dots → jump straight into a region
+ $$('.p-dot').forEach(d=>d.addEventListener('click', ()=>openSection(d.dataset.sec, d)));
+
+// inject icons into static markup
+ $$('[data-ic]').forEach(el=>{ el.innerHTML = icon(el.dataset.ic); });
+renderAll();
+goHome();
+</script>
+</body>
+</html>
