@@ -1,0 +1,376 @@
+/* =========================================================
+   GLOBAL STYLES
+   ========================================================= */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFDF7;
+    color: #1E293B;
+}
+
+/* Prevent horizontal scrollbar */
+html,
+body {
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* =========================================================
+   TEXT SELECTION
+   ========================================================= */
+
+::selection {
+    background: #7C3AED;
+    color: #FFFFFF;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FFFDF7;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #EA580C;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c2410c;
+}
+
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   CHAT ANIMATIONS
+   ========================================================= */
+
+.chat-bubble-in {
+    animation: bubbleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bubbleIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   PULSE DOT
+   ========================================================= */
+
+.pulse-dot {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(1.2);
+    }
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.nav-link-underline {
+    position: relative;
+}
+
+.nav-link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #EA580C;
+    transition: width 0.3s ease;
+}
+
+.nav-link-underline:hover::after,
+.nav-link-underline.active-link::after {
+    width: 100%;
+}
+
+
+/* =========================================================
+   GENERAL SHADOW
+   ========================================================= */
+
+.soft-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================================
+   CHAT CONTAINER
+   ========================================================= */
+
+.chat-container {
+    height: 550px;
+}
+
+@media (max-width: 768px) {
+    .chat-container {
+        height: 450px;
+    }
+}
+
+
+/* =========================================================
+   FADE IN
+   ========================================================= */
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+.admin-tab-active {
+    border-color: #EA580C;
+    color: #1E293B;
+    background: #FFFDF7;
+}
+
+
+/* =========================================================
+   SELF-DISCOVERY TOOLS
+   ========================================================= */
+
+.self-discovery-card {
+    position: relative;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+
+    background: #FFFFFF;
+    padding: 32px;
+
+    border: 1px solid rgba(124, 58, 237, 0.08);
+    border-radius: 16px;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+    text-decoration: none;
+    color: #1E293B;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.self-discovery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   SELF-DISCOVERY DECORATIVE BLOBS
+   ========================================================= */
+
+.self-discovery-card::after {
+    content: "";
+    position: absolute;
+
+    width: 140px;
+    height: 140px;
+
+    right: -40px;
+    bottom: -50px;
+
+    border-radius: 50%;
+
+    filter: blur(35px);
+
+    opacity: 0.10;
+
+    pointer-events: none;
+}
+
+.self-discovery-card:first-child::after {
+    background: #F59E0B;
+}
+
+.self-discovery-card:last-child::after {
+    background: #7C3AED;
+}
+
+
+/* =========================================================
+   SELF-DISCOVERY ICONS
+   ========================================================= */
+
+.self-discovery-icon {
+    width: 56px;
+    height: 56px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+}
+
+.ikigai-icon {
+    background: rgba(234, 88, 12, 0.10);
+    color: #EA580C;
+}
+
+.compass-icon {
+    background: rgba(124, 58, 237, 0.10);
+    color: #7C3AED;
+}
+
+
+/* =========================================================
+   SELF-DISCOVERY TEXT
+   ========================================================= */
+
+.self-discovery-label {
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+
+    margin-bottom: 6px;
+}
+
+.self-discovery-title {
+    font-family: "Poppins", sans-serif;
+
+    font-size: 1.75rem;
+    font-weight: 600;
+
+    color: #1E293B;
+
+    margin-bottom: 10px;
+}
+
+.self-discovery-description {
+    font-family: "Inter", sans-serif;
+
+    font-size: 0.95rem;
+    line-height: 1.7;
+
+    color: #475569;
+
+    max-width: 520px;
+}
+
+
+/* =========================================================
+   SELF-DISCOVERY CTA
+   ========================================================= */
+
+.self-discovery-action {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 22px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.action-orange {
+    color: #EA580C;
+}
+
+.action-lavender {
+    color: #7C3AED;
+}
+
+
+/* =========================================================
+   MOBILE SELF-DISCOVERY
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .self-discovery-card {
+        flex-direction: column;
+        padding: 24px;
+    }
+
+    .self-discovery-title {
+        font-size: 1.5rem;
+    }
+}
