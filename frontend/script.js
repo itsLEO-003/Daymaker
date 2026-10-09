@@ -342,7 +342,7 @@ async function sendStudentMessage(e) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/messages', {
+        const response = await fetch('https://daymaker-backend-nmk0.onrender.com/api/messages', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -387,7 +387,7 @@ async function sendStudentMessage(e) {
 
     try {
         const response = await fetch(
-            `http://localhost:3000/api/messages?counsellorId=${encodeURIComponent(activeCounsellor)}&studentEmail=${encodeURIComponent(window.studentEmail)}`
+            `https://daymaker-backend-nmk0.onrender.com/api/messages?counsellorId=${encodeURIComponent(activeCounsellor)}&studentEmail=${encodeURIComponent(window.studentEmail)}`
         );
 
         const messages = await response.json();
@@ -510,7 +510,7 @@ async function loadAdminStudents() {
 
     try {
         const response = await fetch(
-            `http://localhost:3000/api/messages?counsellorId=${encodeURIComponent(selectedAdminCounsellor)}`
+            `https://daymaker-backend-nmk0.onrender.com/api/messages?counsellorId=${encodeURIComponent(selectedAdminCounsellor)}`
         );
 
         const messages = await response.json();
@@ -649,7 +649,7 @@ function selectAdminStudent(studentEmail) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/messages', {
+        const response = await fetch('https://daymaker-backend-nmk0.onrender.com/api/messages', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -702,7 +702,7 @@ function selectAdminStudent(studentEmail) {
 
     try {
         const url =
-            `http://localhost:3000/api/messages` +
+            `https://daymaker-backend-nmk0.onrender.com/api/messages` +
             `?counsellorId=${encodeURIComponent(selectedAdminCounsellor)}` +
             `&studentEmail=${encodeURIComponent(activeAdminChat)}`;
 
@@ -921,7 +921,7 @@ lastAdminMessageCount = messages.length;
 
     async function testBackendConnection() {
     try {
-        const response = await fetch("http://localhost:3000/api/test");
+        const response = await fetch("https://daymaker-backend-nmk0.onrender.com/api/test");
 
         const data = await response.json();
 
